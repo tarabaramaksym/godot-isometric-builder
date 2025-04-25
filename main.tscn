@@ -1,0 +1,105 @@
+[gd_scene load_steps=16 format=3 uid="uid://ctnbt1ngum1jw"]
+
+[ext_resource type="Script" uid="uid://reakglxesskt" path="res://player.gd" id="1_0xm2m"]
+[ext_resource type="Script" uid="uid://bbtj6bi577x0v" path="res://main.gd" id="1_h2yge"]
+[ext_resource type="Script" uid="uid://dhqpe3s6rtx3e" path="res://ui/building/building_ui.gd" id="2_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://bw2ol6f1l3cfy" path="res://wall.tscn" id="3_h2yge"]
+[ext_resource type="Script" uid="uid://cft178kqubses" path="res://ui/building/building_size_ui.gd" id="4_7mycd"]
+[ext_resource type="Script" uid="uid://djnhxqxtmkvug" path="res://component/building/building_builder.gd" id="5_lquwl"]
+[ext_resource type="Script" uid="uid://cvrpwbxndlp8i" path="res://camera_3d.gd" id="6_272bh"]
+
+[sub_resource type="Environment" id="Environment_0xm2m"]
+ambient_light_source = 2
+ambient_light_color = Color(0.804743, 0.804743, 0.804743, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ig7tw"]
+radius = 0.4
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0xm2m"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0xm2m"]
+albedo_color = Color(0.233925, 0.233925, 0.233925, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_0xm2m"]
+material = SubResource("StandardMaterial3D_0xm2m")
+size = Vector2(1, 1)
+
+[sub_resource type="MeshLibrary" id="MeshLibrary_0xm2m"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_0xm2m"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ig7tw"]
+albedo_color = Color(0.103513, 0.398537, 9.62615e-08, 1)
+
+[node name="Main" type="Node3D" node_paths=PackedStringArray("camera", "plane")]
+script = ExtResource("1_h2yge")
+camera = NodePath("CharacterBody3D/Pivot/Camera3D")
+plane = NodePath("GridMap/Plan")
+
+[node name="BuildingBuilder" type="Node3D" parent="."]
+script = ExtResource("5_lquwl")
+metadata/_custom_type_script = "uid://djnhxqxtmkvug"
+
+[node name="BuildingUi" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("2_1bvp3")
+
+[node name="BuildingSizeUi" type="Control" parent="BuildingUi"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 224.0
+offset_top = 2.0
+offset_right = 264.0
+offset_bottom = 42.0
+script = ExtResource("4_7mycd")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 22.6, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_0xm2m")
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="." node_paths=PackedStringArray("camera")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.1, 2.1, -15.1)
+script = ExtResource("1_0xm2m")
+camera = NodePath("Pivot/Camera3D")
+
+[node name="Player" type="MeshInstance3D" parent="CharacterBody3D"]
+mesh = SubResource("CapsuleMesh_ig7tw")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+transform = Transform3D(0.826631, 0, 0, 0, 1, 0, 0, 0, 0.865878, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_0xm2m")
+
+[node name="Pivot" type="Node3D" parent="CharacterBody3D"]
+transform = Transform3D(0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 24.637, 34.762, 24.411)
+
+[node name="Camera3D" type="Camera3D" parent="CharacterBody3D/Pivot" node_paths=PackedStringArray("pivot")]
+projection = 1
+size = 20.0
+script = ExtResource("6_272bh")
+pivot = NodePath("..")
+
+[node name="Highlight" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_0xm2m")
+
+[node name="GridMap" type="GridMap" parent="."]
+mesh_library = SubResource("MeshLibrary_0xm2m")
+cell_size = Vector3(1, 1, 1)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="GridMap"]
+mesh = SubResource("BoxMesh_0xm2m")
+skeleton = NodePath("../..")
+
+[node name="Plan" type="CSGBox3D" parent="GridMap"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+use_collision = true
+size = Vector3(100, 1, 100)
+material = SubResource("StandardMaterial3D_ig7tw")
+
+[node name="StaticBody3D" parent="." instance=ExtResource("3_h2yge")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -13.6843)
