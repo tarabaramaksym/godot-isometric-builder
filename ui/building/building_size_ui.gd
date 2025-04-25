@@ -60,17 +60,23 @@ func _on_size_options_changed(options):
         axis_container.add_child(buttons_container)
         
         # Add buttons for each size option
-        for size_value in range(axis_data.min, axis_data.max + 1):
+        var current_value = axis_data.min
+        var step = 0.5 if current_value < 1 else 1  # Use 0.5 steps for values below 1
+
+        while current_value <= axis_data.max:
             var button = Button.new()
-            button.text = str(size_value)
+            button.text = str(current_value)
             button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-            button.pressed.connect(_on_size_button_pressed.bind(axis, size_value))
+            button.pressed.connect(_on_size_button_pressed.bind(axis, current_value))
             
             # Add mouse enter/exit events to each button
             button.mouse_entered.connect(_on_mouse_entered)
             button.mouse_exited.connect(_on_mouse_exited)
             
             buttons_container.add_child(button)
+            
+            # Increment by step
+            current_value += step
 
 func _on_size_button_pressed(axis, value):
     if building_builder:

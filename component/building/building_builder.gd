@@ -191,7 +191,7 @@ func add_mesh(bodyPosition: Vector3, parent_node: Node):
 	parent_node.add_child(root)
 	return root
 
-func create_simple_mesh(root_node: Node3D, component_data: Dictionary, is_preview = false):
+func create_simple_mesh(root_node: Node3D, component_data: Dictionary, is_preview = false, is_drag_preview = false):
 	# Create the specified mesh type
 	var meshChild
 	if component_data.mesh == "BoxMesh3D":
@@ -237,8 +237,9 @@ func create_simple_mesh(root_node: Node3D, component_data: Dictionary, is_previe
 	
 	mesh_instance.material_override = material
 	
-	# If no y-centered mesh, add an offset
-	if not "position" in component_data:
+	# If no y-centered mesh, add an offset ONLY for non-drag previews
+	# For drag previews, this will be handled by the main script
+	if not "position" in component_data and not is_drag_preview:
 		# Half height offset to place bottom face at y=0
 		root_node.transform.origin.y = (meshChild.size.y / 2) - 0.5
 	
@@ -339,3 +340,27 @@ func rotate_component():
 	if preview_instance:
 		preview_instance.rotation_degrees.y = current_rotation
 	print("Rotated to: ", current_rotation, " degrees")
+
+# Create a preview instance without adding it to the scene, but without position adjustments
+func create_preview_instance() -> Node3D:
+	# If no valid component, exit
+	if GlobalBuilding.selected_component.is_empty() or not building_components.has(GlobalBuilding.selected_component):
+		return null
+	
+	# Create new preview
+	var component_data = building_components[GlobalBuilding.selected_component]
+	var preview = StaticBody3D.new()
+	preview.name = "DragPreviewMesh"
+	
+	# Apply current rotation
+	preview.rotation_degrees.y = current_rotation
+	
+	# Create mesh based on component type, but DO NOT apply position offset in create_simple_mesh
+	# The offset will be applied by the caller
+	var is_drag_preview = true
+	if component_data.mesh_type == "simple":
+		create_simple_mesh(preview, component_data, true, is_drag_preview)
+	elif component_data.mesh_type == "array":
+		create_array_mesh(preview, component_data, true)
+	
+	return preview

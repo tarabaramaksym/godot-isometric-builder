@@ -4,12 +4,9 @@
     "mesh_type": "simple",
     "mesh": "BoxMesh3D",
     "base_mesh_size": [1, 4, 1],
+    "sizing_type": "directional",
     "size_options": [
       {
-        "x": {
-          "min": 1,
-          "max": 6
-        },
         "y": {
           "min": 2,
           "max": 6
@@ -23,19 +20,12 @@
     "mesh_type": "simple",
     "mesh": "BoxMesh3D",
     "base_mesh_size": [1, 0.5, 1],
+    "sizing_type": "area",
     "size_options": [
       {
-        "x": {
-          "min": 1,
-          "max": 4
-        },
         "y": {
           "min": 0.5,
           "max": 2
-        },
-        "z": {
-          "min": 1,
-          "max": 4
         }
       }
     ],
@@ -44,6 +34,7 @@
   "base_stairs": {
     "name": "base_stairs",
     "mesh_type": "array",
+    "sizing_type": "directional",
     "mesh": [
       {
         "mesh_type": "simple",
