@@ -84,7 +84,7 @@ func _on_size_button_pressed(axis, value):
         print("Set ", axis, " size to ", value)
 
 func _on_mouse_entered():
-    GlobalBuilding.ui_interaction = true
+    GlobalBuilding.set_ui_interaction(true)
 
 func _on_mouse_exited():
-    GlobalBuilding.ui_interaction = false 
+    GlobalBuilding.set_ui_interaction(false) 

@@ -1,6 +1,5 @@
 extends Control
 
-var component_json_path = "res://assets/json/building/house-components.json"
 var component_container: VBoxContainer
 
 func _ready():
@@ -20,29 +19,12 @@ func _ready():
 	title.add_theme_font_size_override("font_size", 20)
 	component_container.add_child(title)
 	
-	# Load and parse the JSON file
-	var components = load_component_data()
+	# Load components from global
+	var components = GlobalFileBuilding.load_component_data()
 	
 	# Generate UI for each component
 	for component_key in components.keys():
 		add_component_button(component_key)
-
-func load_component_data():
-	var file = FileAccess.open(component_json_path, FileAccess.READ)
-	if file:
-		var json_text = file.get_as_text()
-		file.close()
-		
-		var json = JSON.new()
-		var error = json.parse(json_text)
-		if error == OK:
-			return json.data
-		else:
-			print("JSON Parse Error: ", json.get_error_message(), " at line ", json.get_error_line())
-	else:
-		print("Failed to open file: ", component_json_path)
-	
-	return {}
 
 func add_component_button(component_name):
 	var button = Button.new()
@@ -59,8 +41,12 @@ func add_component_button(component_name):
 	component_container.add_child(button)
 
 func _on_component_button_pressed(component_name):
+	if component_name == GlobalBuilding.selected_component:
+		GlobalBuilding.set_selected_component("")
+		return
+
 	print("Selected component: ", component_name)
-	GlobalBuilding.selected_component = component_name
+	GlobalBuilding.set_selected_component(component_name)
 	
 	# Get reference to building builder and update size options
 	var building_builder = get_node("/root/Main/BuildingBuilder")  # Adjust path as needed
@@ -68,7 +54,7 @@ func _on_component_button_pressed(component_name):
 		building_builder.update_size_options(component_name)
 
 func _on_mouse_entered():
-	GlobalBuilding.ui_interaction = true
+	GlobalBuilding.set_ui_interaction(true)
 
 func _on_mouse_exited():
-	GlobalBuilding.ui_interaction = false
+	GlobalBuilding.set_ui_interaction(false)
