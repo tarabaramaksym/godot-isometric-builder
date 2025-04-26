@@ -1,10 +1,13 @@
-[gd_scene load_steps=16 format=3 uid="uid://ctnbt1ngum1jw"]
+[gd_scene load_steps=17 format=3 uid="uid://ctnbt1ngum1jw"]
 
 [ext_resource type="Script" uid="uid://reakglxesskt" path="res://player.gd" id="1_0xm2m"]
 [ext_resource type="Script" uid="uid://bbtj6bi577x0v" path="res://main.gd" id="1_h2yge"]
 [ext_resource type="Script" uid="uid://dhqpe3s6rtx3e" path="res://ui/building/building_ui.gd" id="2_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://bw2ol6f1l3cfy" path="res://wall.tscn" id="3_h2yge"]
+[ext_resource type="Script" uid="uid://dj16qubtkmfpj" path="res://ui/building/workstation_ui.gd" id="3_kek77"]
+[ext_resource type="Script" uid="uid://btg183as8lg5v" path="res://component/interaction/highlight.gd" id="4_4c57u"]
 [ext_resource type="Script" uid="uid://cft178kqubses" path="res://ui/building/building_size_ui.gd" id="4_7mycd"]
+[ext_resource type="Script" uid="uid://dy3sidmcbxw68" path="res://component/building/building_mouse_handler.gd" id="5_5vw27"]
 [ext_resource type="Script" uid="uid://djnhxqxtmkvug" path="res://component/building/building_builder.gd" id="5_lquwl"]
 [ext_resource type="Script" uid="uid://cvrpwbxndlp8i" path="res://camera_3d.gd" id="6_272bh"]
 
@@ -16,13 +19,6 @@ ambient_light_color = Color(0.804743, 0.804743, 0.804743, 1)
 radius = 0.4
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0xm2m"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0xm2m"]
-albedo_color = Color(0.233925, 0.233925, 0.233925, 1)
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_0xm2m"]
-material = SubResource("StandardMaterial3D_0xm2m")
-size = Vector2(1, 1)
 
 [sub_resource type="MeshLibrary" id="MeshLibrary_0xm2m"]
 
@@ -36,9 +32,32 @@ script = ExtResource("1_h2yge")
 camera = NodePath("CharacterBody3D/Pivot/Camera3D")
 plane = NodePath("GridMap/Plan")
 
-[node name="BuildingBuilder" type="Node3D" parent="."]
+[node name="BuildingBuilder" type="Node3D" parent="." node_paths=PackedStringArray("highlight")]
 script = ExtResource("5_lquwl")
+highlight = NodePath("../Highlight")
 metadata/_custom_type_script = "uid://djnhxqxtmkvug"
+
+[node name="BuildingMouseHandler" type="Node" parent="." node_paths=PackedStringArray("camera", "plane", "gridmap", "building_builder")]
+script = ExtResource("5_5vw27")
+camera = NodePath("../CharacterBody3D/Pivot/Camera3D")
+plane = NodePath("../GridMap/Plan")
+gridmap = NodePath("../GridMap")
+building_builder = NodePath("../BuildingBuilder")
+metadata/_custom_type_script = "uid://dy3sidmcbxw68"
+
+[node name="Highlight" type="Node" parent="."]
+script = ExtResource("4_4c57u")
+metadata/_custom_type_script = "uid://btg183as8lg5v"
+
+[node name="WorkstationUI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 874.0
+offset_top = 2.0
+offset_right = 914.0
+offset_bottom = 42.0
+script = ExtResource("3_kek77")
+metadata/_custom_type_script = "uid://dj16qubtkmfpj"
 
 [node name="BuildingUi" type="Control" parent="."]
 layout_mode = 3
@@ -83,9 +102,6 @@ projection = 1
 size = 20.0
 script = ExtResource("6_272bh")
 pivot = NodePath("..")
-
-[node name="Highlight" type="MeshInstance3D" parent="."]
-mesh = SubResource("PlaneMesh_0xm2m")
 
 [node name="GridMap" type="GridMap" parent="."]
 mesh_library = SubResource("MeshLibrary_0xm2m")

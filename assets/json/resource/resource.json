@@ -1,0 +1,34 @@
+{
+  "r_iron_ore": {
+    "inherits": "r_ore",
+    "name": "Iron Ore",
+    "description": "A block of iron ore",
+    "icon": "res://assets/textures/iron_ore.png",
+    "weight": 1.0,
+    "base_value": 1.0
+  },
+  "r_gold_ore": {
+    "inherits": "r_ore",
+    "name": "Gold Ore",
+    "description": "A block of gold ore",
+    "icon": "res://assets/textures/gold_ore.png",
+    "weight": 1.0,
+    "base_value": 1.0
+  },
+  "cr_iron_ingot": {
+    "inherits": "r_ingot",
+    "name": "Iron Ingot",
+    "description": "A block of iron ingot",
+    "icon": "res://assets/textures/iron_ingot.png",
+    "weight": 1.0,
+    "base_value": 1.0
+  },
+  "cr_gold_ingot": {
+    "inherits": "r_ingot",
+    "name": "Gold Ingot",
+    "description": "A block of gold ingot",
+    "icon": "res://assets/textures/gold_ingot.png",
+    "weight": 1.0,
+    "base_value": 1.0
+  }
+}

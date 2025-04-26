@@ -1,0 +1,23 @@
+{
+  "simple_furnace": {
+    "name": "simple_furnace",
+    "inherits": "furnace",
+    "mesh_type": "simple",
+    "mesh": "BoxMesh3D",
+    "base_mesh_size": [1, 2, 1],
+    "collider": "simple",
+    "rgb_color": [124, 124, 124]
+  },
+  "advanced_furnace": {
+    "name": "advanced_furnace",
+    "inherits": "furnace",
+    "mesh_type": "simple",
+    "mesh": "BoxMesh3D",
+    "base_mesh_size": [2, 2, 2],
+    "collider": "simple",
+    "workstation_properties": {
+      "speed_increase": 2
+    },
+    "rgb_color": [54, 54, 54]
+  }
+}

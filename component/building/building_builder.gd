@@ -2,35 +2,27 @@ class_name BuildingBuilder extends Node3D
 
 signal size_options_changed(options)
 
-var component_json_path = "res://assets/json/building/house-components.json"
+@export var highlight: Highlight
+
 var building_components = {}
+var workstation_components = {}
 var current_size_options = {}
 var current_size_values = {}
 var preview_instance = null
 var current_rotation = 0  # Store rotation in degrees
 
-func _ready():
-	building_components = load_component_data()
-	# Initialize with default selected component if present
-	if not GlobalBuilding.selected_component.is_empty() and building_components.has(GlobalBuilding.selected_component):
-		update_size_options(GlobalBuilding.selected_component)
+# Position handler for all positioning logic
+var position_handler = BuildingPositionHandler.new()
 
-func load_component_data():
-	var file = FileAccess.open(component_json_path, FileAccess.READ)
-	if file:
-		var json_text = file.get_as_text()
-		file.close()
-		
-		var json = JSON.new()
-		var error = json.parse(json_text)
-		if error == OK:
-			return json.data
-		else:
-			print("JSON Parse Error: ", json.get_error_message(), " at line ", json.get_error_line())
-	else:
-		print("Failed to open file: ", component_json_path)
+func _ready():
+	# Add position handler
+	add_child(position_handler)
 	
-	return {}
+	building_components = GlobalFileBuilding.load_component_data().duplicate()
+	building_components.merge(GlobalFileWorkstation.load_workstation_data())
+	# Initialize with default selected component if present
+	if not GlobalBuilding.selected_component.is_empty() and is_valid_component():
+		update_size_options(GlobalBuilding.selected_component)
 
 func update_size_options(component_name):
 	current_size_options.clear()
@@ -74,7 +66,7 @@ func update_preview():
 	clear_preview()
 	
 	# If no valid component, exit
-	if GlobalBuilding.selected_component.is_empty() or not building_components.has(GlobalBuilding.selected_component):
+	if GlobalBuilding.selected_component.is_empty() or not is_valid_component():
 		return
 	
 	# Create new preview
@@ -104,63 +96,28 @@ func clear_preview():
 # Update the position of the preview
 func update_preview_position(position: Vector3):
 	if preview_instance:
-		if GlobalBuilding.selected_component.is_empty() or not building_components.has(GlobalBuilding.selected_component):
+		if GlobalBuilding.selected_component.is_empty() or not is_valid_component():
 			return
 			
 		var component_data = building_components[GlobalBuilding.selected_component]
-		var offset = calculate_grid_offset(component_data)
 		
-		# Set the base position with grid offset
-		preview_instance.transform.origin = position + offset
-		
-		# Get the first child's mesh for height calculation (matches behavior in create_simple_mesh)
-		if component_data.mesh_type == "simple" and not "position" in component_data:
-			# Find mesh instance to get size
-			for child in preview_instance.get_children():
-				if child is MeshInstance3D and child.mesh is BoxMesh:
-					# Apply the same height offset used in create_simple_mesh
-					preview_instance.transform.origin.y += child.mesh.size.y / 2
-					break
+		# Use position handler
+		position_handler.update_preview_position(
+			preview_instance,
+			position,
+			component_data,
+			current_size_values
+		)
 
 func calculate_grid_offset(component_data: Dictionary) -> Vector3:
-	var offset = Vector3.ZERO
-	
-	if component_data.mesh_type == "simple":
-		if "base_mesh_size" in component_data:
-			var base_size = component_data.base_mesh_size
-			var current_size = Vector3(
-				current_size_values.get("x", base_size[0]),
-				current_size_values.get("y", base_size[1]),
-				current_size_values.get("z", base_size[2])
-			)
-			
-			# Calculate offset to keep the bottom-center fixed on grid
-			# The offset depends on which dimensions can be changed
-			# if "x" in current_size_values:
-			# 	# Check if width is even (using int conversion)
-			# 	if int(current_size.x) % 2 == 0:
-			# 		# Even width needs 0.5 grid offset in x
-			# 		offset.x = 0.5
-			
-			# if "z" in current_size_values:
-			# 	# Check if depth is even (using int conversion)
-			# 	if int(current_size.z) % 2 == 0:
-			# 		# Even depth needs 0.5 grid offset in z
-			# 		offset.z = 0.5
-
-			# if "y" in current_size_values:
-			# 	# Check if height is even (using int conversion)
-			# 	if int(current_size.y) % 2 == 0:
-			# 		# Even height needs 0.5 grid offset in y
-			# 		offset.y = 0.5
-	
-	return offset
+	# Use position handler
+	return position_handler.calculate_grid_offset(component_data, current_size_values)
 
 # Check if preview is active
 func has_preview():
 	return preview_instance != null
 
-func add_mesh(bodyPosition: Vector3, parent_node: Node):
+func add_mesh(bodyPosition: Vector3, parent_node: Node, is_plane = true):
 	# Get the selected component from global
 	var component_name = GlobalBuilding.selected_component
 	
@@ -171,15 +128,14 @@ func add_mesh(bodyPosition: Vector3, parent_node: Node):
 	
 	var component_data = building_components[component_name]
 	
-	# Calculate grid alignment offset
-	var offset = calculate_grid_offset(component_data)
+	# Calculate grid alignment offset using position handler
+	var offset = position_handler.calculate_grid_offset(component_data, current_size_values)
 	
 	# Create root node (StaticBody3D)
 	var root = StaticBody3D.new()
-	root.transform.origin = bodyPosition + offset
 	
-	# Apply current rotation
-	root.rotation_degrees.y = current_rotation
+	# Setup position using position handler
+	position_handler.setup_mesh_position(root, bodyPosition, offset, current_rotation)
 	
 	# Create mesh based on component type
 	if component_data.mesh_type == "simple":
@@ -211,7 +167,7 @@ func create_simple_mesh(root_node: Node3D, component_data: Dictionary, is_previe
 		else:
 			# Default size if no base_mesh_size specified
 			meshChild.size = Vector3(1, 1, 1)
-	
+
 	# Create mesh instance
 	var mesh_instance = MeshInstance3D.new()
 	mesh_instance.mesh = meshChild
@@ -234,14 +190,35 @@ func create_simple_mesh(root_node: Node3D, component_data: Dictionary, is_previe
 			collision_shape.shape = shape
 			collision_shape.transform.origin = Vector3(0, 0, 0) # At center of mesh
 			root_node.add_child(collision_shape)
+
+	if "rgb_color" in component_data:
+		# Approach 1: If rgb_color is an array of numbers [r, g, b]
+		if component_data.rgb_color is Array and component_data.rgb_color.size() >= 3:
+			material.albedo_color = Color(
+				component_data.rgb_color[0] / 255.0, 
+				component_data.rgb_color[1] / 255.0, 
+				component_data.rgb_color[2] / 255.0, 
+				1.0  # Full opacity
+			)
+		# Approach 2: If rgb_color is a string like "#FF0000"
+		elif component_data.rgb_color is String:
+			material.albedo_color = Color(component_data.rgb_color)
+		# Approach 3: If rgb_color is already a Color object
+		elif component_data.rgb_color is Color:
+			material.albedo_color = component_data.rgb_color
 	
 	mesh_instance.material_override = material
 	
-	# If no y-centered mesh, add an offset ONLY for non-drag previews
-	# For drag previews, this will be handled by the main script
-	if not "position" in component_data and not is_drag_preview:
-		# Half height offset to place bottom face at y=0
-		root_node.transform.origin.y = (meshChild.size.y / 2) - 0.5
+	# Apply position using position handler
+	position_handler.apply_simple_mesh_position(
+		root_node, 
+		meshChild.size, 
+		component_data, 
+		is_drag_preview
+	)
+
+	if !is_preview and !is_drag_preview:
+		highlight.assign_highlight(component_data, root_node, mesh_instance)
 	
 	# Add mesh to container
 	root_node.add_child(mesh_instance)
@@ -255,10 +232,8 @@ func create_array_mesh(root_node: Node3D, component_data: Dictionary, is_preview
 		var part_container = Node3D.new()
 		part_container.name = "PartContainer"
 		
-		# Set position if specified in mesh data
-		if "position" in mesh_data:
-			var pos = mesh_data.position
-			part_container.transform.origin = Vector3(pos[0], pos[1], pos[2])
+		# Apply position using position handler
+		position_handler.apply_array_part_position(part_container, mesh_data)
 		
 		# Create the specified mesh type
 		var meshChild
@@ -323,10 +298,8 @@ func add_collision_shape(root_node: Node3D, size: Vector3, position: Vector3):
 	root_node.add_child(collision_shape)
 
 func has_mesh_at_position(positionMesh: Vector3, parent_node: Node) -> bool:
-	for wall in parent_node.get_children():
-		if wall is Node3D and wall.transform.origin.is_equal_approx(positionMesh):
-			return true
-	return false
+	# Use position handler
+	return position_handler.has_mesh_at_position(positionMesh, parent_node)
 
 # Reset rotation when changing components
 func reset_rotation():
@@ -344,7 +317,7 @@ func rotate_component():
 # Create a preview instance without adding it to the scene, but without position adjustments
 func create_preview_instance() -> Node3D:
 	# If no valid component, exit
-	if GlobalBuilding.selected_component.is_empty() or not building_components.has(GlobalBuilding.selected_component):
+	if GlobalBuilding.selected_component.is_empty() or not is_valid_component():
 		return null
 	
 	# Create new preview
@@ -364,3 +337,9 @@ func create_preview_instance() -> Node3D:
 		create_array_mesh(preview, component_data, true)
 	
 	return preview
+
+
+func is_valid_component() -> bool:
+	var selected_component = GlobalBuilding.selected_component
+
+	return building_components.has(selected_component)

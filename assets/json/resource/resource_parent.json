@@ -1,0 +1,11 @@
+{
+  "r_ore": {
+    "stackable": true,
+    "has_quality": true
+  },
+  "cr_ingot": {
+    "stackable": true,
+    "has_quality": true,
+    "modifiers": ["heated"]
+  }
+}
