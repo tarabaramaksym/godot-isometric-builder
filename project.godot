@@ -21,6 +21,8 @@ GlobalBuilding="*res://global/global_building.gd"
 GlobalFileBuilding="*res://global/global_file_building.gd"
 GlobalFileResource="*res://global/global_file_resource.gd"
 GlobalFileWorkstation="*res://global/global_file_workstation.gd"
+GlobalFileNature="*res://global/global_file_nature.gd"
+GlobalPlayer="*res://global/global_player.gd"
 
 [dotnet]
 
@@ -31,6 +33,11 @@ project/assembly_name="Isometric_Rpg"
 ui_left_click={
 "deadzone": 0.2,
 "events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":0,"position":Vector2(0, 0),"global_position":Vector2(0, 0),"factor":1.0,"button_index":1,"canceled":false,"pressed":false,"double_click":false,"script":null)
+]
+}
+ui_right_click={
+"deadzone": 0.2,
+"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":2,"position":Vector2(163, 13),"global_position":Vector2(172, 61),"factor":1.0,"button_index":2,"canceled":false,"pressed":true,"double_click":false,"script":null)
 ]
 }
 up={

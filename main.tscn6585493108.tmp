@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://ctnbt1ngum1jw"]
+[gd_scene load_steps=22 format=3 uid="uid://ctnbt1ngum1jw"]
 
 [ext_resource type="Script" uid="uid://reakglxesskt" path="res://player.gd" id="1_0xm2m"]
 [ext_resource type="Script" uid="uid://bbtj6bi577x0v" path="res://main.gd" id="1_h2yge"]
@@ -10,11 +10,8 @@
 [ext_resource type="Script" uid="uid://dy3sidmcbxw68" path="res://component/building/building_mouse_handler.gd" id="5_5vw27"]
 [ext_resource type="Script" uid="uid://drhui4cnkawkl" path="res://component/interaction/interaction_handler.gd" id="5_efxa6"]
 [ext_resource type="Script" uid="uid://djnhxqxtmkvug" path="res://component/building/building_builder.gd" id="5_lquwl"]
-[ext_resource type="Script" uid="uid://dhsd8qepey3jr" path="res://component/interaction/interaction_nature.gd" id="6_074og"]
 [ext_resource type="Script" uid="uid://cvrpwbxndlp8i" path="res://camera_3d.gd" id="6_272bh"]
 [ext_resource type="Script" uid="uid://dc8hf1fx8xpmx" path="res://component/interaction/interaction_mouse_handler.gd" id="6_dg77c"]
-[ext_resource type="Script" uid="uid://df4shl606m081" path="res://component/interaction/interaction_workstation.gd" id="7_cegan"]
-[ext_resource type="Script" uid="uid://d4nr7asn8w7dd" path="res://ui/interaction/workstation_interaction_ui.gd" id="9_82xsv"]
 [ext_resource type="Script" uid="uid://rxex0up8ilp7" path="res://ui/building/nature_ui.gd" id="10_ycdy4"]
 [ext_resource type="Script" uid="uid://tdl1oev6b2oh" path="res://ui/player/inventory_ui.gd" id="11_vivmo"]
 [ext_resource type="Script" uid="uid://b2wa76s5icnpp" path="res://component/resource/inventory.gd" id="12_w48qg"]
@@ -39,7 +36,6 @@ albedo_color = Color(0.103513, 0.398537, 9.62615e-08, 1)
 script = ExtResource("1_h2yge")
 camera = NodePath("Player/Pivot/Camera3D")
 plane = NodePath("GridMap/Plan")
-metadata/_edit_vertical_guides_ = [-623.0]
 
 [node name="BuildingBuilder" type="Node3D" parent="." node_paths=PackedStringArray("highlight")]
 script = ExtResource("5_lquwl")
@@ -58,31 +54,14 @@ metadata/_custom_type_script = "uid://dy3sidmcbxw68"
 script = ExtResource("4_4c57u")
 metadata/_custom_type_script = "uid://btg183as8lg5v"
 
-[node name="InteractionHandler" type="Node" parent="." node_paths=PackedStringArray("workstation_interaction", "nature_interaction")]
+[node name="InteractionHandler" type="Node" parent="."]
 script = ExtResource("5_efxa6")
-workstation_interaction = NodePath("InteractionWorkstation")
-nature_interaction = NodePath("InteractionNature")
-
-[node name="InteractionNature" type="Node" parent="InteractionHandler"]
-script = ExtResource("6_074og")
-
-[node name="InteractionWorkstation" type="Node" parent="InteractionHandler" node_paths=PackedStringArray("workstation_interaction_ui")]
-script = ExtResource("7_cegan")
-workstation_interaction_ui = NodePath("../../WorkstationInteractionUI")
 
 [node name="InteractionMouseHandler" type="Node" parent="." node_paths=PackedStringArray("camera", "interaction_handler")]
 script = ExtResource("6_dg77c")
 camera = NodePath("../Player/Pivot/Camera3D")
 interaction_handler = NodePath("../InteractionHandler")
 metadata/_custom_type_script = "uid://dc8hf1fx8xpmx"
-
-[node name="WorkstationInteractionUI" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-script = ExtResource("9_82xsv")
-metadata/_custom_type_script = "uid://d4nr7asn8w7dd"
 
 [node name="WorkstationUI" type="Control" parent="."]
 layout_mode = 3

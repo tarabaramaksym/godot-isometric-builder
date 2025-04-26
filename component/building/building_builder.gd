@@ -20,6 +20,8 @@ func _ready():
 	
 	building_components = GlobalFileBuilding.load_component_data().duplicate()
 	building_components.merge(GlobalFileWorkstation.load_workstation_data())
+	building_components.merge(GlobalFileNature.load_nature_data())
+
 	# Initialize with default selected component if present
 	if not GlobalBuilding.selected_component.is_empty() and is_valid_component():
 		update_size_options(GlobalBuilding.selected_component)
@@ -133,6 +135,9 @@ func add_mesh(bodyPosition: Vector3, parent_node: Node, is_plane = true):
 	
 	# Create root node (StaticBody3D)
 	var root = StaticBody3D.new()
+		
+	if "can_be_interacted" in component_data:
+		root.set_meta("component_data", component_data)
 	
 	# Setup position using position handler
 	position_handler.setup_mesh_position(root, bodyPosition, offset, current_rotation)

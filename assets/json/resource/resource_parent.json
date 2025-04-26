@@ -1,4 +1,12 @@
 {
+  "r_wood_log": {
+    "stackable": false,
+    "has_quality": true
+  },
+  "r_stone": {
+    "stackable": true,
+    "has_quality": true
+  },
   "r_ore": {
     "stackable": true,
     "has_quality": true

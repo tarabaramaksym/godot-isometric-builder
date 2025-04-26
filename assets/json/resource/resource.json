@@ -1,4 +1,20 @@
 {
+  "r_oak_log": {
+    "inherits": "r_log",
+    "name": "Oak Log",
+    "description": "A block of oak log",
+    "icon": "res://assets/textures/oak_log.png",
+    "weight": 1.0,
+    "base_value": 1.0
+  },
+  "r_stone": {
+    "inherits": "r_stone",
+    "name": "Stone",
+    "description": "A block of stone",
+    "icon": "res://assets/textures/stone.png",
+    "weight": 1.0,
+    "base_value": 1.0
+  },
   "r_iron_ore": {
     "inherits": "r_ore",
     "name": "Iron Ore",

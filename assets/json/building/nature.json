@@ -1,0 +1,30 @@
+{
+  "oak_tree": {
+    "type": "tree",
+    "name": "oak_tree",
+    "mesh_type": "simple",
+    "mesh": "BoxMesh3D",
+    "base_mesh_size": [1, 4, 1],
+    "collider": "simple",
+    "rgb_color": [34, 139, 34],
+    "resource": "r_oak_log"
+  },
+  "stone": {
+    "name": "stone",
+    "mesh_type": "simple",
+    "mesh": "BoxMesh3D",
+    "base_mesh_size": [1, 1, 1],
+    "collider": "simple",
+    "rgb_color": [128, 128, 128],
+    "resource": "r_stone"
+  },
+  "iron_ore": {
+    "name": "iron_ore",
+    "mesh_type": "simple",
+    "mesh": "BoxMesh3D",
+    "base_mesh_size": [1, 1, 1],
+    "collider": "simple",
+    "rgb_color": [77, 77, 77],
+    "resource": "r_iron_ore"
+  }
+}

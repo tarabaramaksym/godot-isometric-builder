@@ -1,9 +1,10 @@
-extends CharacterBody3D
+class_name Player extends CharacterBody3D
 
 @export var speed := 5.0
 @export var jump_velocity := 6.0
 @export var gravity := 9.8
 @export var camera: Camera3D  # Assign in editor
+@export var inventory: Inventory
 
 func _physics_process(delta):
 	var input_dir = Input.get_vector("left", "right", "down", "up")

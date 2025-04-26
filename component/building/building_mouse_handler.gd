@@ -28,7 +28,7 @@ func _process(_delta):
 	if Input.is_action_just_pressed("rotate") and not GlobalBuilding.ui_interaction:
 		building_builder.rotate_component()
 	
-	if GlobalBuilding.ui_interaction:
+	if GlobalBuilding.ui_interaction or GlobalBuilding.selected_component.is_empty():
 		clear_all_previews()
 		return
 

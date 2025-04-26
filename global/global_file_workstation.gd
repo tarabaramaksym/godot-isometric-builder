@@ -57,8 +57,9 @@ func load_parent_workstation_data():
 func assign_parent_data():
 	for key in cached_workstations.keys():
 		var value = cached_workstations[key]
-		value.is_workstation = true
+		value.interaction_type = "workstation"
 		value.can_be_highlighted = true
+		value.can_be_interacted = true
 
 		if "inherits" in value:
 			var parent_data = parent_workstations.get(value.inherits)
