@@ -5,26 +5,21 @@ extends Camera3D
 @export var max_zoom: float = 25.0
 @export var zoom_speed: float = 0.5
 @export var zoom_smoothing: float = 5.0
-@export var rotation_speed: float = 0.005
-@export var rotation_smoothing: float = 5.0
-@export var vertical_rotation_limit: float = 0.8  # Limit in radians (approx 45 degrees)
 @export var free_roam_speed: float = 10.0  # Speed for arrow key movement
+@export var rotation_speed: float = 0.5  # Speed for rotation
 
 var target_size: float = 15.0
 var current_size: float = 15.0
-var is_rotating: bool = false
-var initial_pivot_rotation: Quaternion
-var target_pivot_rotation: Quaternion
 var orbit_distance: float
 var free_roam_mode: bool = false
 var original_pivot_position: Vector3
+var rotating: bool = false
+var last_mouse_position: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
 	# Set initial orthographic size
 	current_size = target_size
 	size = current_size
-	initial_pivot_rotation = pivot.quaternion
-	target_pivot_rotation = pivot.quaternion
 	
 	# Store the initial distance from the pivot
 	orbit_distance = global_transform.origin.distance_to(pivot.global_transform.origin)
@@ -36,10 +31,6 @@ func _process(delta: float) -> void:
 		current_size = lerp(current_size, target_size, zoom_smoothing * delta)
 		size = current_size
 	
-	# Smooth rotation restoration when not rotating
-	if not is_rotating and pivot.quaternion != target_pivot_rotation:
-		pivot.quaternion = pivot.quaternion.slerp(target_pivot_rotation, rotation_smoothing * delta)
-		
 	# Make sure camera maintains its position relative to pivot
 	# This ensures we're always looking at the player/pivot point
 	update_camera_position()
@@ -89,37 +80,34 @@ func _input(event: InputEvent) -> void:
 			# Zoom out
 			zoom_camera(zoom_speed)
 		elif event.button_index == MOUSE_BUTTON_MIDDLE:
-			if event.pressed:
-				# Start rotation
-				is_rotating = true
-				initial_pivot_rotation = pivot.quaternion
-			else:
-				# Stop rotation and start restoration
-				is_rotating = false
-				target_pivot_rotation = initial_pivot_rotation
+			# Start/stop rotation
+			rotating = event.pressed
+			if rotating:
+				last_mouse_position = event.position
 	
-	elif event is InputEventMouseMotion and is_rotating:
-		# Store original distance
-		var original_distance = global_transform.origin.distance_to(pivot.global_transform.origin)
-		
-		# Rotate around Y-axis (horizontal)
-		rotate_y(-event.relative.x * rotation_speed)
-		
-		# Calculate proposed rotation for vertical movement
-		var current_rotation_x = rotation.x
-		var proposed_rotation_x = current_rotation_x - event.relative.y * rotation_speed
-		
-		# Apply vertical rotation only if within limits
-		if abs(proposed_rotation_x) < vertical_rotation_limit:
-			rotate_x(-event.relative.y * rotation_speed)
-			
-		# Update camera position to maintain orbit
-		update_camera_position()
+	# Handle mouse movement for rotation
+	elif event is InputEventMouseMotion and rotating:
+		handle_rotation(event)
 	
 	# Handle Home key to reset camera to original position
 	elif event is InputEventKey and event.pressed:
 		if event.keycode == KEY_HOME:
 			reset_camera_position()
+
+func handle_rotation(event: InputEventMouseMotion) -> void:
+	# Calculate mouse movement delta
+	var delta = event.position - last_mouse_position
+	last_mouse_position = event.position
+	
+	# Apply horizontal rotation (around Y axis) to the pivot
+	# We only want rotation around the global Y axis for horizontal movement
+	var rotation_y = delta.x * rotation_speed * 0.01
+	
+	# Create a transform that rotates around the global Y axis
+	var rot_transform = Transform3D().rotated(Vector3.UP, rotation_y)
+	
+	# Apply the rotation to the pivot's transform
+	pivot.transform = rot_transform * pivot.transform
 
 func zoom_camera(zoom_amount: float) -> void:
 	# Calculate new target size
