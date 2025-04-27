@@ -11,6 +11,11 @@ var drag_start_position = Vector3.ZERO
 var drag_current_position = Vector3.ZERO
 var drag_previews = []  # Array to store preview instances for dragging
 
+var adjust_y = false
+var adjust_y_value = 0
+
+var locked_y_value = 0
+
 func _ready():
 	# If BuildingBuilder isn't already in the scene, create it
 	if not building_builder:
@@ -45,11 +50,21 @@ func _process(_delta):
 	var result = space_state.intersect_ray(physics)
 	
 	# Handle dragging and placement
-	if result and (result.collider == plane or (result.collider is StaticBody3D and result.normal.dot(Vector3.UP) > 0.99)):
+	if result and (result.collider == plane or result.collider is StaticBody3D):
+		var is_top_face = result.collider is StaticBody3D and result.normal.dot(Vector3.UP) > 0.99
+
 		var is_plane = result.collider == plane
 		var world_pos = result.position
 		var cell = gridmap.local_to_map(world_pos)
 		var cell_world_pos = gridmap.map_to_local(cell)
+
+		if !is_top_face:
+			adjust_y = false
+
+		if (cell_world_pos.y != world_pos.y or cell.y != world_pos.y) and is_top_face:
+			cell_world_pos.y = world_pos.y
+			adjust_y = true
+			adjust_y_value = world_pos.y
 		
 		# Get component sizing type
 		var sizing_type = get_component_sizing_type()
@@ -58,6 +73,7 @@ func _process(_delta):
 		if Input.is_action_just_pressed("ui_left_click") and not is_dragging and not GlobalBuilding.selected_component.is_empty():
 			if sizing_type != "single":
 				is_dragging = true
+				locked_y_value = cell_world_pos.y
 				drag_start_position = cell_world_pos
 				drag_current_position = cell_world_pos
 				update_drag_previews()
@@ -73,6 +89,8 @@ func _process(_delta):
 		# End dragging and place objects
 		if Input.is_action_just_released("ui_left_click") and is_dragging:
 			place_dragged_components()
+			adjust_y = false
+			locked_y_value = 0
 			is_dragging = false
 			clear_all_previews()
 		
@@ -89,6 +107,8 @@ func _process(_delta):
 		# End drag if released outside valid area
 		if Input.is_action_just_released("ui_left_click") and is_dragging:
 			is_dragging = false
+			adjust_y = false
+			locked_y_value = 0
 			clear_all_previews()
 
 # Get the sizing type of the current component
@@ -122,6 +142,15 @@ func get_cells_in_drag() -> Array:
 	var start_cell = gridmap.local_to_map(drag_start_position)
 	var end_cell = gridmap.local_to_map(drag_current_position)
 	
+	if adjust_y:
+		print('adjust_y - ', adjust_y)
+		start_cell.y = adjust_y_value
+		end_cell.y = adjust_y_value
+
+	if locked_y_value != 0:
+		start_cell.y = locked_y_value
+		end_cell.y = locked_y_value
+
 	# Get sizing type to determine behavior
 	var sizing_type = get_component_sizing_type()
 	
@@ -138,6 +167,13 @@ func get_cells_in_drag() -> Array:
 			
 			for x in range(x_min, x_max + 1):
 				var cell_pos = gridmap.map_to_local(Vector3i(x, start_cell.y, start_cell.z))
+
+				if adjust_y:
+					cell_pos.y = adjust_y_value
+				
+				if locked_y_value != 0:
+					cell_pos.y = locked_y_value
+
 				cells.append(cell_pos)
 		else:
 			# Z-direction drag
@@ -146,6 +182,13 @@ func get_cells_in_drag() -> Array:
 			
 			for z in range(z_min, z_max + 1):
 				var cell_pos = gridmap.map_to_local(Vector3i(start_cell.x, start_cell.y, z))
+
+				if adjust_y:
+					cell_pos.y = adjust_y_value
+
+				if locked_y_value != 0:
+					cell_pos.y = locked_y_value
+
 				cells.append(cell_pos)
 	
 	elif sizing_type == "area":
@@ -158,6 +201,13 @@ func get_cells_in_drag() -> Array:
 		for x in range(x_min, x_max + 1):
 			for z in range(z_min, z_max + 1):
 				var cell_pos = gridmap.map_to_local(Vector3i(x, start_cell.y, z))
+
+				if adjust_y:
+					cell_pos.y = adjust_y_value
+
+				if locked_y_value != 0:
+					cell_pos.y = locked_y_value
+
 				cells.append(cell_pos)
 	
 	else: # "single" or default

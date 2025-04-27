@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://ctnbt1ngum1jw"]
+[gd_scene load_steps=24 format=3 uid="uid://ctnbt1ngum1jw"]
 
 [ext_resource type="Script" uid="uid://reakglxesskt" path="res://player.gd" id="1_0xm2m"]
 [ext_resource type="Script" uid="uid://bbtj6bi577x0v" path="res://main.gd" id="1_h2yge"]
@@ -29,8 +29,6 @@ radius = 0.4
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0xm2m"]
 
 [sub_resource type="MeshLibrary" id="MeshLibrary_0xm2m"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_0xm2m"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ig7tw"]
 albedo_color = Color(0.103513, 0.398537, 9.62615e-08, 1)
@@ -164,10 +162,6 @@ pivot = NodePath("..")
 [node name="GridMap" type="GridMap" parent="."]
 mesh_library = SubResource("MeshLibrary_0xm2m")
 cell_size = Vector3(1, 1, 1)
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="GridMap"]
-mesh = SubResource("BoxMesh_0xm2m")
-skeleton = NodePath("../..")
 
 [node name="Plan" type="CSGBox3D" parent="GridMap"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
