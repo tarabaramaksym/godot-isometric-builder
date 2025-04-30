@@ -229,11 +229,7 @@ func create_drag_preview(param_position: Vector3):
 	# Create preview instance
 	var preview = building_builder.create_preview_instance()
 	if preview:
-		# Calculate grid offset
-		var offset = building_builder.calculate_grid_offset(component_data)
-		
-		# Set the base position with grid offset
-		preview.transform.origin = param_position + offset
+		preview.transform.origin = param_position
 		
 		# Apply the same height adjustment used in regular preview
 		if component_data.mesh_type == "simple" and not "position" in component_data:
