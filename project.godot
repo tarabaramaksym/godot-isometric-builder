@@ -23,6 +23,7 @@ GlobalFileResource="*res://global/global_file_resource.gd"
 GlobalFileWorkstation="*res://global/global_file_workstation.gd"
 GlobalFileNature="*res://global/global_file_nature.gd"
 GlobalPlayer="*res://global/global_player.gd"
+GlobalConfig="*res://global/global_config.gd"
 
 [dotnet]
 

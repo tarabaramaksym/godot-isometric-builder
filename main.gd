@@ -2,9 +2,9 @@ extends Node3D
 
 @export var camera: Camera3D
 @export var plane: CSGBox3D
-@onready var gridmap = $GridMap
-@onready var building_builder = $BuildingBuilder
-@onready var building_mouse_handler = $BuildingMouseHandler
+@export var gridmap: GridMap
+@export var building_builder: BuildingBuilder
+@export var building_mouse_handler: BuildingMouseHandler
 
 func _ready():
 	# Initialize the BuildingMouseHandler if it doesn't exist yet
@@ -26,4 +26,4 @@ func add_mesh(param_position: Vector3, is_plane: bool):
 	building_mouse_handler.add_mesh(param_position, is_plane)
 
 func has_mesh_at_position(param_position: Vector3) -> bool:
-	return building_mouse_handler.has_mesh_at_position(param_position, gridmap)
+	return building_mouse_handler.has_mesh_at_position(param_position)

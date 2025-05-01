@@ -16,5 +16,6 @@ mesh = SubResource("BoxMesh_n6hv0")
 shape = SubResource("BoxShape3D_powlc")
 
 [node name="Input" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5)
 
 [node name="Output" type="Node3D" parent="."]

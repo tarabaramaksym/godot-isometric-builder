@@ -6,7 +6,9 @@
     "mesh": "BoxMesh3D",
     "base_mesh_size": [1, 2, 1],
     "collider": "simple",
-    "rgb_color": [124, 124, 124]
+    "rgb_color": [124, 124, 124],
+	"input_position": [0, 0, 0.5],
+	"output_position": [0, 0, 0.5]
   },
   "advanced_furnace": {
     "name": "advanced_furnace",
@@ -18,6 +20,8 @@
     "workstation_properties": {
       "speed_increase": 2
     },
-    "rgb_color": [54, 54, 54]
+    "rgb_color": [54, 54, 54],
+	"input_position": [0, 0, 0.5],
+	"output_position": [0, 0, 0.5]
   }
 }

@@ -34,10 +34,10 @@ func handle_interaction():
     if result and result.collider is StaticBody3D:
         # Found a StaticBody3D
         var body = result.collider
-        print("Clicked on: ", body.name)
-        
-        # This is where your interaction logic would go
-        # For example, check for workstation data
-        if body.has_meta("component_data"):
-            var click_type = "left" if is_left_click else "right"
-            interaction_handler.handle_interaction(body, click_type)
+        var main_node = body.get_parent()
+
+        if !(main_node is InteractiveGameObject):
+            return
+
+        var click_type = "left" if is_left_click else "right"
+        main_node.handle_interaction(GlobalPlayer.get_player(), { "click_type": click_type })

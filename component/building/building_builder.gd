@@ -3,6 +3,7 @@ class_name BuildingBuilder extends Node3D
 signal size_options_changed(options)
 
 @export var highlight: Highlight
+@export var navigation_region: NavigationRegion3D
 
 var building_components = {}
 var workstation_components = {}
@@ -130,7 +131,7 @@ func add_mesh(bodyPosition: Vector3, parent_node: Node, _is_plane = true):
 
 	var game_object = null
 
-	if "interactive" in component_data and component_data.interactive:
+	if "can_be_interacted" in component_data and component_data.can_be_interacted:
 		game_object = InteractiveGameObject.new()
 	else:
 		game_object = BuildingGameObject.new()
@@ -151,6 +152,7 @@ func add_mesh(bodyPosition: Vector3, parent_node: Node, _is_plane = true):
 
 	# Add the component to the scene
 	parent_node.add_child(game_object)
+
 	return game_object
 
 
