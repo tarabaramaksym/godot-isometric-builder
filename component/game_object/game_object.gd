@@ -74,8 +74,11 @@ func create_mesh():
 func set_game_object_position(body_position: Vector3, param_rotation: float, shifted: bool = false):
     self.transform.origin = body_position
     self.rotation_degrees.y = param_rotation
-
+        
     if self.mesh_scene:
+        # TODO: Temporary hardcoded positions
+        self.transform.origin.y += 0.5
+        self.mesh_scene.transform.origin.y -= 0.5
         return
     
     if not "position" in component_data and not shifted:
@@ -83,6 +86,9 @@ func set_game_object_position(body_position: Vector3, param_rotation: float, shi
         self.transform.origin.y += (self.mesh_instance.mesh.size.y / 2)
 
 func create_material():
+    if self.mesh_scene:
+        return
+
     var material = StandardMaterial3D.new()
     material.albedo_color = Color(0.8, 0.8, 0.8)
 

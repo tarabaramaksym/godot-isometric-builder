@@ -1,55 +1,91 @@
 {
-  "base_wall": {
-    "name": "base_wall",
-    "mesh_type": "simple",
-    "mesh": "BoxMesh3D",
-    "base_mesh_size": [1, 4, 1],
-    "sizing_type": "directional",
-    "size_options": [
-      {
-        "y": {
-          "min": 2,
-          "max": 6
-        }
-      }
-    ],
-    "collider": "simple"
-  },
-  "base_foundation": {
-    "name": "base_foundation",
-    "mesh_type": "simple",
-    "mesh": "BoxMesh3D",
-    "base_mesh_size": [1, 0.5, 1],
-    "sizing_type": "area",
-    "size_options": [
-      {
-        "y": {
-          "min": 0.5,
-          "max": 2
-        }
-      }
-    ],
-    "collider": "simple"
-  },
-  "base_stairs": {
-    "name": "base_stairs",
-    "mesh_type": "array",
-    "sizing_type": "directional",
-    "mesh": [
-      {
-        "mesh_type": "simple",
-        "mesh": "BoxMesh3D",
-        "base_mesh_size": [1, 0.5, 0.5],
-        "position": [0, 0, -0.25],
-        "collider": "simple"
-      },
-      {
-        "mesh_type": "simple",
-        "mesh": "BoxMesh3D",
-        "base_mesh_size": [1, 0.25, 0.5],
-        "position": [0, 0, 0.265],
-        "collider": "simple"
-      }
-    ]
-  }
+	"kenney_wall": {
+		"name": "kenney_wall",
+		"base_mesh_size": [
+			1,
+			1,
+			1
+		],
+		"sizing_type": "directional",
+		"mesh_type": "load",
+		"mesh": "res://assets/3d/kenney/wall.glb",
+		"collider": "simple"
+	},
+	"base_wall": {
+		"name": "base_wall",
+		"mesh_type": "simple",
+		"mesh": "BoxMesh3D",
+		"base_mesh_size": [
+			1,
+			4,
+			1
+		],
+		"sizing_type": "directional",
+		"size_options": [
+			{
+				"y": {
+					"min": 2,
+					"max": 6
+				}
+			}
+		],
+		"collider": "simple"
+	},
+	"base_foundation": {
+		"name": "base_foundation",
+		"mesh_type": "simple",
+		"mesh": "BoxMesh3D",
+		"base_mesh_size": [
+			1,
+			0.5,
+			1
+		],
+		"sizing_type": "area",
+		"size_options": [
+			{
+				"y": {
+					"min": 0.5,
+					"max": 2
+				}
+			}
+		],
+		"collider": "simple"
+	},
+	"base_stairs": {
+		"name": "base_stairs",
+		"mesh_type": "array",
+		"sizing_type": "directional",
+		"mesh": [
+			{
+				"mesh_type": "simple",
+				"mesh": "BoxMesh3D",
+				"base_mesh_size": [
+					1,
+					0.5,
+					0.5
+				],
+				"position": [
+					0,
+					0,
+					-0.25
+				],
+				"collider": "simple"
+			},
+			{
+				"mesh_type": "simple",
+				"mesh": "BoxMesh3D",
+				"base_mesh_size": [
+					1,
+					0.25,
+					0.5
+				],
+				"position": [
+					0,
+					0,
+					0.265
+				],
+				"collider": "simple"
+			}
+		]
+	}
 }

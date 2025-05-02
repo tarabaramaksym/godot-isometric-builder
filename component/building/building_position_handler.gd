@@ -17,6 +17,11 @@ func update_preview_position(preview_instance: Node3D, preview_position: Vector3
                 # Apply the same height offset used in create_simple_mesh
                 preview_instance.transform.origin.y += child.mesh.size.y / 2
                 break
+    # For load mesh type, no special positioning is needed as the model is already positioned correctly
+    # Unless there are specific positioning rules in the component data
+    elif component_data.mesh_type == "load" and "position" in component_data:
+        var pos = component_data.position
+        preview_instance.transform.origin += Vector3(pos[0], pos[1], pos[2])
 
 # Apply position offset for simple meshes
 func apply_simple_mesh_position(root_node: Node3D, mesh_size: Vector3, component_data: Dictionary, is_drag_preview: bool = false):

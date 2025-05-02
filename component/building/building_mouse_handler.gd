@@ -244,10 +244,33 @@ func create_drag_preview(param_position: Vector3):
                     # Apply the same height offset used in create_simple_mesh
                     preview.transform.origin.y += child.mesh.size.y / 2
                     break
+        # For loaded mesh scenes, apply transparency to child meshes
+        elif component_data.mesh_type == "load":
+            # Add transparency to all mesh instances in the loaded scene
+            for child in preview.get_children():
+                if child is Node3D:  # The mesh_scene should be a Node3D
+                    _apply_transparency_to_mesh_scene(child)
         
         # Add to scene and to our list
         add_child(preview)
         drag_previews.append(preview)
+
+# Helper function to apply transparency to all meshes in a loaded scene
+func _apply_transparency_to_mesh_scene(node: Node):
+    # Recursively apply transparency to all MeshInstance3D nodes
+    if node is MeshInstance3D:
+        var material = node.get_surface_override_material(0)
+        if not material:
+            material = StandardMaterial3D.new()
+            node.material_override = material
+        
+        if material is StandardMaterial3D:
+            material.flags_transparent = true
+            material.albedo_color.a = 0.5
+    
+    # Check all children
+    for child in node.get_children():
+        _apply_transparency_to_mesh_scene(child)
 
 # Clear all drag preview meshes
 func clear_all_previews():

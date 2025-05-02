@@ -94,6 +94,8 @@ func update_preview():
 		create_preview_simple_mesh(preview_instance, component_data, false)
 	elif component_data.mesh_type == "array":
 		create_array_mesh(preview_instance, component_data, true)
+	elif component_data.mesh_type == "load":
+		create_preview_load_mesh(preview_instance, component_data)
 
 	add_child(preview_instance)
 
@@ -315,6 +317,37 @@ func rotate_component():
 	print("Rotated to: ", current_rotation, " degrees")
 
 
+# Create a preview for a loaded mesh scene
+func create_preview_load_mesh(root_node: Node3D, component_data: Dictionary):
+	var mesh_path = component_data.mesh
+	var model_scene = load(mesh_path)
+	
+	if model_scene:
+		var model_instance = model_scene.instantiate()
+		
+		# Apply transparency to all mesh instances
+		apply_transparency_to_mesh_scene(model_instance)
+		
+		# Add the model instance to the root node
+		root_node.add_child(model_instance)
+
+# Helper function to apply transparency to all meshes in a scene
+func apply_transparency_to_mesh_scene(node: Node):
+	# Apply transparency to this node if it's a MeshInstance3D
+	if node is MeshInstance3D:
+		var material = node.get_surface_override_material(0)
+		if not material:
+			material = StandardMaterial3D.new()
+			node.material_override = material
+		
+		if material is StandardMaterial3D:
+			material.flags_transparent = true
+			material.albedo_color.a = 0.5
+	
+	# Apply to all children recursively
+	for child in node.get_children():
+		apply_transparency_to_mesh_scene(child)
+
 # Create a preview instance without adding it to the scene, but without position adjustments
 func create_preview_instance() -> Node3D:
 	# If no valid component, exit
@@ -336,6 +369,8 @@ func create_preview_instance() -> Node3D:
 		create_preview_simple_mesh(preview, component_data, is_drag_preview)
 	elif component_data.mesh_type == "array":
 		create_array_mesh(preview, component_data, true)
+	elif component_data.mesh_type == "load":
+		create_preview_load_mesh(preview, component_data)
 
 	return preview
 

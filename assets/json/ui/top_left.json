@@ -9,6 +9,12 @@
 				"icon": "res://assets/image/ui/building.png",
 				"type": "tab",
 				"items": {
+					"kenney_wall": {
+						"label": "Kenney Wall",
+						"icon": "res://assets/image/ui/wall.png",
+						"type": "building",
+						"building_key": "kenney_wall"
+					},
 					"wall": {
 						"label": "Wall",
 						"icon": "res://assets/image/ui/wall.png",
@@ -87,5 +93,4 @@
 		"type": "action",
 		"action": "show_inventory"
 	}
-
 }
