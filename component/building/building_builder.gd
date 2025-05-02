@@ -4,6 +4,7 @@ signal size_options_changed(options)
 
 @export var highlight: Highlight
 @export var navigation_region: NavigationRegion3D
+@export var gridmap: GridMap
 
 var building_components = {}
 var workstation_components = {}
@@ -152,7 +153,7 @@ func add_mesh(bodyPosition: Vector3, parent_node: Node, _is_plane = true):
 
 	# Add the component to the scene
 	parent_node.add_child(game_object)
-
+	
 	return game_object
 
 
@@ -343,3 +344,59 @@ func is_valid_component() -> bool:
 	var selected_component = GlobalBuilding.selected_component
 
 	return building_components.has(selected_component)
+
+
+func save_building(game_object: GameObject):
+	var save_data = game_object.save()
+	GlobalSaveManager.add_building(save_data)
+	print("Building saved: ", save_data.game_object_id)
+
+
+func load_buildings():
+	var buildings_data = GlobalSaveManager.load_buildings()
+	
+	if buildings_data.is_empty():
+		print("No buildings to load")
+		return
+		
+	print("Loading ", buildings_data.size(), " buildings...")
+	
+	for building_data in buildings_data:
+		var game_object_id = building_data.game_object_id
+		var component_data = building_components[game_object_id]
+		
+		var game_object = null
+		
+		if building_data.type == "InteractiveGameObject" or ("can_be_interacted" in component_data and component_data.can_be_interacted):
+			game_object = InteractiveGameObject.new()
+		else:
+			game_object = BuildingGameObject.new()
+		
+		# Initialize with saved data
+		game_object.initialize_game_object(
+			game_object_id,
+			{
+				"body_position": Vector3(
+					building_data.position.x,
+					building_data.position.y,
+					building_data.position.z
+				),
+				"rotation": building_data.rotation.y,
+				"current_size_values": building_data.size_values,
+                "shifted": true
+			}
+		)
+		
+		# Add to scene
+		gridmap.add_child(game_object)
+
+# Clear all buildings in the scene and in save file
+func clear_all_buildings():
+	# Clear buildings from the scene
+	for child in gridmap.get_children():
+		var isBuilding = child is BuildingGameObject or child is InteractiveGameObject
+		if isBuilding:
+			child.queue_free()
+	
+	# Clear the save file
+	GlobalSaveManager.clear_buildings()

@@ -10,7 +10,6 @@ class_name Player extends CharacterBody3D
 var is_path_moving := false
 var finished_path_callback: Callable
 
-
 func _physics_process(delta):
     var input_dir = Input.get_vector("left", "right", "down", "up")
 

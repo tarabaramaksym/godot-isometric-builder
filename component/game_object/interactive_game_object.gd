@@ -22,10 +22,17 @@ func initialize_game_object(game_object_id_param: String, parameters: Dictionary
     
 func handle_interaction(interacter: Node3D, parameters: Dictionary):
     var distance = interacter.global_position.distance_to(input_point.global_position)
-    print(distance)
+
     if distance < GlobalConfig.action_proximity:
         print('hello')
         # trigger interaction
         pass
     else:
         interacter.move_to(input_point.global_position, handle_interaction.bind(interacter, parameters))
+
+# Override save function to add interactive-specific data
+func save() -> Dictionary:
+    var save_data = super.save()
+    save_data["type"] = "InteractiveGameObject"
+    
+    return save_data
