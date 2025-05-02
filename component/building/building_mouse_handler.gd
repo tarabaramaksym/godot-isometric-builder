@@ -29,6 +29,10 @@ func has_mesh_at_position(param_position: Vector3) -> bool:
     return building_builder.has_mesh_at_position(param_position, gridmap)
 
 func _process(_delta):
+    if Input.is_action_just_pressed("ui_right_click"):
+        GlobalBuilding.set_selected_component("")
+        return
+
     # Check for rotation input
     if Input.is_action_just_pressed("rotate") and not GlobalBuilding.ui_interaction:
         building_builder.rotate_component()

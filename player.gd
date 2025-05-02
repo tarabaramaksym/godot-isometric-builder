@@ -10,10 +10,30 @@ class_name Player extends CharacterBody3D
 var is_path_moving := false
 var finished_path_callback: Callable
 
+var is_interaction_locked := false
+var lock_interaction_callback: Callable
+
+func _ready():
+    var axe = ItemGameObject.new()
+    axe.quantity = 1
+    axe.initialize_game_object("axe", {})
+
+    var pickaxe = ItemGameObject.new()
+    pickaxe.quantity = 1
+    pickaxe.initialize_game_object("pickaxe", {})
+
+    inventory.add_item(axe)
+    inventory.add_item(pickaxe)
+
 func _physics_process(delta):
     var input_dir = Input.get_vector("left", "right", "down", "up")
+    var is_input_not_zero = input_dir != Vector2.ZERO
 
-    if input_dir != Vector2.ZERO and is_path_moving:
+    if is_input_not_zero:
+        if is_interaction_locked:
+            unlock_interaction_before_timer_end()
+
+    if is_input_not_zero and is_path_moving:
         is_path_moving = false
     
     if is_path_moving:
@@ -30,7 +50,7 @@ func _physics_process(delta):
 
         return
 
-    if input_dir != Vector2.ZERO:
+    if is_input_not_zero:
         # Get camera directions
         var cam_forward = -camera.global_transform.basis.z
         var cam_right = camera.global_transform.basis.x
@@ -58,3 +78,14 @@ func move_to(target: Vector3, callback: Callable):
     navigation_agent.set_target_position(target)
     is_path_moving = true
     finished_path_callback = callback
+
+func lock_interaction(callback: Callable):
+    is_interaction_locked = true
+    lock_interaction_callback = callback
+
+func unlock_interaction():
+    is_interaction_locked = false
+
+func unlock_interaction_before_timer_end():
+    lock_interaction_callback.call()
+    is_interaction_locked = false

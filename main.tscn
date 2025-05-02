@@ -1,11 +1,9 @@
-[gd_scene load_steps=26 format=3 uid="uid://ctnbt1ngum1jw"]
+[gd_scene load_steps=25 format=3 uid="uid://ctnbt1ngum1jw"]
 
 [ext_resource type="Script" uid="uid://reakglxesskt" path="res://player.gd" id="1_0xm2m"]
 [ext_resource type="Script" uid="uid://bbtj6bi577x0v" path="res://main.gd" id="1_h2yge"]
-[ext_resource type="Script" uid="uid://dhqpe3s6rtx3e" path="res://ui/building/building_ui.gd" id="2_1bvp3"]
 [ext_resource type="Script" uid="uid://dj16qubtkmfpj" path="res://ui/building/workstation_ui.gd" id="3_kek77"]
 [ext_resource type="Script" uid="uid://btg183as8lg5v" path="res://component/interaction/highlight.gd" id="4_4c57u"]
-[ext_resource type="Script" uid="uid://cft178kqubses" path="res://ui/building/building_size_ui.gd" id="4_7mycd"]
 [ext_resource type="Script" uid="uid://dy3sidmcbxw68" path="res://component/building/building_mouse_handler.gd" id="5_5vw27"]
 [ext_resource type="Script" uid="uid://drhui4cnkawkl" path="res://component/interaction/interaction_handler.gd" id="5_efxa6"]
 [ext_resource type="Script" uid="uid://djnhxqxtmkvug" path="res://component/building/building_builder.gd" id="5_lquwl"]
@@ -14,10 +12,11 @@
 [ext_resource type="Script" uid="uid://dc8hf1fx8xpmx" path="res://component/interaction/interaction_mouse_handler.gd" id="6_dg77c"]
 [ext_resource type="Script" uid="uid://df4shl606m081" path="res://component/interaction/interaction_workstation.gd" id="7_cegan"]
 [ext_resource type="Script" uid="uid://d4nr7asn8w7dd" path="res://ui/interaction/workstation_interaction_ui.gd" id="9_82xsv"]
-[ext_resource type="Script" uid="uid://rxex0up8ilp7" path="res://ui/building/nature_ui.gd" id="10_ycdy4"]
+[ext_resource type="Script" uid="uid://dl34msu52yo2a" path="res://ui/building/ui_generator.gd" id="9_yaehf"]
 [ext_resource type="Script" uid="uid://tdl1oev6b2oh" path="res://ui/player/inventory_ui.gd" id="11_vivmo"]
 [ext_resource type="Script" uid="uid://b2wa76s5icnpp" path="res://component/resource/inventory.gd" id="12_w48qg"]
 [ext_resource type="Script" uid="uid://b3a45q4obv8rm" path="res://component/character/character.gd" id="18_cegan"]
+[ext_resource type="PackedScene" uid="uid://br5dyp812lwrc" path="res://assets/3d/item/pickaxe.glb" id="19_cegan"]
 
 [sub_resource type="Environment" id="Environment_0xm2m"]
 ambient_light_source = 2
@@ -85,6 +84,16 @@ camera = NodePath("../Player/Pivot/Camera3D")
 interaction_handler = NodePath("../InteractionHandler")
 metadata/_custom_type_script = "uid://dc8hf1fx8xpmx"
 
+[node name="TopLeftUi" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 8.0
+offset_top = 14.0
+offset_right = 48.0
+offset_bottom = 54.0
+script = ExtResource("9_yaehf")
+ui_config_path = "res://assets/json/ui/top_left.json"
+
 [node name="WorkstationInteractionUI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
@@ -94,6 +103,7 @@ script = ExtResource("9_82xsv")
 metadata/_custom_type_script = "uid://d4nr7asn8w7dd"
 
 [node name="WorkstationUI" type="Control" parent="."]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_left = 874.0
@@ -102,30 +112,6 @@ offset_right = 914.0
 offset_bottom = 42.0
 script = ExtResource("3_kek77")
 metadata/_custom_type_script = "uid://dj16qubtkmfpj"
-
-[node name="BuildingUi" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-script = ExtResource("2_1bvp3")
-
-[node name="BuildingSizeUi" type="Control" parent="BuildingUi"]
-layout_mode = 3
-anchors_preset = 0
-offset_left = 224.0
-offset_top = 2.0
-offset_right = 264.0
-offset_bottom = 42.0
-script = ExtResource("4_7mycd")
-
-[node name="NatureUI" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
-offset_top = 484.0
-offset_right = 40.0
-offset_bottom = 524.0
-script = ExtResource("10_ycdy4")
 
 [node name="PlayerInventoryUI" type="Control" parent="."]
 layout_mode = 3
@@ -143,13 +129,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 22.6, 0)
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_0xm2m")
 
-[node name="Player" type="CharacterBody3D" parent="." node_paths=PackedStringArray("camera", "inventory", "navigation_agent", "right_hand")]
+[node name="Player" type="CharacterBody3D" parent="." node_paths=PackedStringArray("camera", "inventory", "navigation_agent")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.1, 2.1, -15.1)
 script = ExtResource("1_0xm2m")
 camera = NodePath("Pivot/Camera3D")
 inventory = NodePath("Inventory")
 navigation_agent = NodePath("NavigationAgent3D")
-right_hand = NodePath("RightHand")
 
 [node name="Inventory" type="Node" parent="Player"]
 script = ExtResource("12_w48qg")
@@ -202,3 +187,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
 use_collision = true
 size = Vector3(100, 1, 100)
 material = SubResource("StandardMaterial3D_ig7tw")
+
+[node name="pickaxe" parent="." instance=ExtResource("19_cegan")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.35543, -0.290838, -20.9369)

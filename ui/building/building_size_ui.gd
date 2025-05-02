@@ -1,5 +1,7 @@
 extends Control
 
+# TODO Handle on main with key presses instead of ui
+
 var building_builder: BuildingBuilder
 var size_options_container: VBoxContainer
 var axis_containers = {}

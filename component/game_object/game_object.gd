@@ -1,9 +1,13 @@
 class_name GameObject extends Node3D
 
 var game_object_id: String
+var game_object_name: String
+
 var static_body: StaticBody3D
 var mesh_instance: MeshInstance3D
 var collision_shape: CollisionShape3D
+
+var mesh_scene: Node3D
 
 #TMP
 var component_data: Dictionary
@@ -18,6 +22,7 @@ func handle_interaction(_interacter: Node3D, _parameters: Dictionary):
 
 func setup_and_position_static_body(body_position: Vector3, param_rotation: float, current_size_values_param: Dictionary, shifted: bool = false):
     self.static_body = StaticBody3D.new()
+    self.current_size_values = current_size_values_param
 
     # data layer temporary!!!
     var building_components = GlobalFileBuilding.load_component_data().duplicate()
@@ -25,19 +30,22 @@ func setup_and_position_static_body(body_position: Vector3, param_rotation: floa
     building_components.merge(GlobalFileNature.load_nature_data())
 
     component_data = building_components[game_object_id]
-    self.current_size_values = current_size_values_param
     # TODO: remove temporary
     
     create_mesh()
     set_game_object_position(body_position, param_rotation, shifted)
     create_material()
     create_collider()
-    
+    apply_root_properties()
+
+    if !self.mesh_scene:
+        self.static_body.add_child(self.mesh_instance)
+    else:
+        self.static_body.add_child(self.mesh_scene)
+
     self.static_body.add_child(self.collision_shape)
-    self.static_body.add_child(self.mesh_instance)
 
     self.add_child(self.static_body)
-
 
 func create_mesh():
     var meshChild
@@ -54,12 +62,21 @@ func create_mesh():
             current_size_values.get("z", base_size.z)
         )
 
-    self.mesh_instance = MeshInstance3D.new()
-    self.mesh_instance.mesh = meshChild
+        self.mesh_instance = MeshInstance3D.new()
+        self.mesh_instance.mesh = meshChild
+    elif component_data.mesh_type == "load":
+        var mesh_path = component_data.mesh
+        var model_scene = load(mesh_path)
+        if model_scene:
+            var model_instance = model_scene.instantiate()
+            self.mesh_scene = model_instance
 
 func set_game_object_position(body_position: Vector3, param_rotation: float, shifted: bool = false):
     self.transform.origin = body_position
     self.rotation_degrees.y = param_rotation
+
+    if self.mesh_scene:
+        return
     
     if not "position" in component_data and not shifted:
         # Half height offset to place bottom face at y=0
@@ -77,17 +94,39 @@ func create_material():
             1.0
         )
 
-    self.mesh_instance.material_override = material
+    if self.mesh_scene:
+        var children = self.mesh_scene.get_children()
+        for child in children:
+            if child is MeshInstance3D:
+                child.material_override = material
+    else:
+        self.mesh_instance.material_override = material
 
 func create_collider():
     if "collider" in component_data and component_data.collider == "simple":
         self.collision_shape = CollisionShape3D.new()
         var shape = BoxShape3D.new()
-        shape.size = self.mesh_instance.mesh.size
+        
+        var size = component_data.base_mesh_size
+        var base_size = Vector3(size[0], size[1], size[2])
+
+        shape.size = Vector3(
+            current_size_values.get("x", base_size.x),
+            current_size_values.get("y", base_size.y),
+            current_size_values.get("z", base_size.z)
+        )
+
         self.collision_shape.shape = shape
         self.collision_shape.transform.origin = Vector3(0, 0, 0)
 
     #highlight.assign_highlight(component_data, root_node, mesh_instance)
+
+func apply_root_properties():
+    if "scale" in component_data:
+        self.mesh_instance.scale = component_data.scale
+
+    if "rotation" in component_data:
+        self.mesh_instance.rotation = component_data.rotation
 
 func save() -> Dictionary:
     var current_size = self.mesh_instance.mesh.size
@@ -113,7 +152,6 @@ func save() -> Dictionary:
     
     return save_data
     
-# Load the game object's state from a dictionary
 func load_from_data(data: Dictionary) -> void:
     if data.has("position"):
         var pos = Vector3(

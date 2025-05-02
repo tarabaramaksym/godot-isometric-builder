@@ -1,0 +1,76 @@
+{
+	"cut_tree": {
+		"label": "Cut tree",
+		"type": "action",
+		"onend": "remove",
+		"inputs": {
+			"axe": {
+				"type": "character",
+				"tool": "axe",
+				"output": {
+					"type": "item",
+					"item": {
+						"main_resource_output": {
+							"item_key": "large_oak_log",
+							"quantity": 1
+						}		
+					}
+				},
+				"action_time": 1,
+				"process_time": 0
+			},
+			"saw": {
+				"type": "character",
+				"tool": "saw",
+				"output": {
+					"type": "item",
+					"item": {
+						"main_resource_output": {
+							"item_key": "large_oak_log",
+							"quantity": 1
+						}		
+					}
+				},
+				"action_time": 1,
+				"process_time": 0
+			}
+		}
+	},
+	"mine_stone": {
+		"label": "Mine stone",
+		"type": "action",
+		"onend": "remove",
+		"inputs": {
+			"pickaxe": {
+				"type": "character",
+				"tool": "pickaxe",
+				"output": {
+					"type": "item",
+					"item": {
+						"main_resource_output": {
+							"item_key": "stone",
+							"quantity": 1
+						}
+					}
+				},
+				"action_time": 1,
+				"process_time": 0
+			}
+		}
+	},
+	"mine_iron_ore": {
+		"label": "Mine iron ore",
+		"inherit": "mine_stone",
+		"inputs": {
+			"pickaxe": {
+				"output": {
+					"item": {
+						"main_resource_output": {
+							"item_key": "iron_ore"
+						}
+					}
+				}
+			}
+		}
+	}
+}

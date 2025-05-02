@@ -7,7 +7,10 @@
     "base_mesh_size": [1, 4, 1],
     "collider": "simple",
     "rgb_color": [34, 139, 34],
-    "resource": "r_oak_log"
+	"input_position": [0, 0, 0],
+	"output_position": [0, 0, 0],
+	"input": ["cut_tree"],
+	"distance_margin": 1
   },
   "stone": {
     "name": "stone",
@@ -16,7 +19,11 @@
     "base_mesh_size": [1, 1, 1],
     "collider": "simple",
     "rgb_color": [128, 128, 128],
-    "resource": "r_stone"
+    "resource": "r_stone",
+	"input_position": [0, 0, 0],
+	"output_position": [0, 0, 0],
+	"input": ["mine_stone"],
+	"distance_margin": 1
   },
   "iron_ore": {
     "name": "iron_ore",
@@ -25,6 +32,10 @@
     "base_mesh_size": [1, 1, 1],
     "collider": "simple",
     "rgb_color": [77, 77, 77],
-    "resource": "r_iron_ore"
+    "resource": "r_iron_ore",
+	"input_position": [0, 0, 0],
+	"output_position": [0, 0, 0],
+	"input": ["mine_iron_ore"],
+	"distance_margin": 1
   }
 }
