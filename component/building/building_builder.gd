@@ -5,6 +5,7 @@ signal size_options_changed(options)
 @export var highlight: Highlight
 @export var navigation_region: NavigationRegion3D
 @export var gridmap: GridMap
+@export var interaction_handler: InteractionHandler
 
 var building_components = {}
 var workstation_components = {}
@@ -15,7 +16,6 @@ var current_rotation = 0  # Store rotation in degrees
 
 # Position handler for all positioning logic
 var position_handler = BuildingPositionHandler.new()
-
 
 func _ready():
 	# Add position handler
@@ -136,6 +136,7 @@ func add_mesh(bodyPosition: Vector3, parent_node: Node, _is_plane = true):
 
 	if "can_be_interacted" in component_data and component_data.can_be_interacted:
 		game_object = InteractiveGameObject.new()
+		game_object.interaction_handler = interaction_handler
 	else:
 		game_object = BuildingGameObject.new()
 
@@ -404,6 +405,7 @@ func load_buildings():
 		
 		if building_data.type == "InteractiveGameObject" or ("can_be_interacted" in component_data and component_data.can_be_interacted):
 			game_object = InteractiveGameObject.new()
+			game_object.interaction_handler = interaction_handler
 		else:
 			game_object = BuildingGameObject.new()
 		

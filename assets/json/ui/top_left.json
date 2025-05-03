@@ -2,84 +2,15 @@
 	"building": {
 		"label": "Buildings",
 		"icon": "res://assets/image/ui/hammer.png",
-		"type": "tab",
-		"items": {
-			"building": {
-				"label": "Buildings",
-				"icon": "res://assets/image/ui/building.png",
-				"type": "tab",
-				"items": {
-					"kenney_wall": {
-						"label": "Kenney Wall",
-						"icon": "res://assets/image/ui/wall.png",
-						"type": "building",
-						"building_key": "kenney_wall"
-					},
-					"wall": {
-						"label": "Wall",
-						"icon": "res://assets/image/ui/wall.png",
-						"type": "building",
-						"building_key": "base_wall"
-					},
-					"foundation": {
-						"label": "Foundation",
-						"icon": "res://assets/image/ui/foundation.png",
-						"type": "building",
-						"building_key": "base_foundation"
-					},
-					"stair": {
-						"label": "Stairs",
-						"icon": "res://assets/image/ui/stairs.png",
-						"type": "building",
-						"building_key": "base_stairs"
-					}
-				}
-			},
-			"workstation": {
-				"label": "Workstations",
-				"icon": "res://assets/image/ui/workstation.png",
-				"type": "tab",
-				"items": {
-					"simple_furnace": {
-						"label": "Simple Furnace",
-						"icon": "res://assets/image/ui/furnace.png",
-						"type": "building",
-						"building_key": "simple_furnace"
-					},
-					"advanced_furnace": {
-						"label": "Advanced Furnace",
-						"icon": "res://assets/image/ui/furnace.png",
-						"type": "building",
-						"building_key": "advanced_furnace"
-					}
-				}
-			},
-			"nature": {
-				"label": "Nature",
-				"icon": "res://assets/image/ui/nature.png",
-				"type": "tab",
-				"items": {
-					"tree": {
-						"label": "Tree",
-						"icon": "res://assets/image/ui/tree.png",
-						"type": "building",
-						"building_key": "oak_tree"
-					},
-					"iron_ore": {
-						"label": "Iron Ore",
-						"icon": "res://assets/image/ui/ore.png",
-						"type": "building",
-						"building_key": "iron_ore"
-					},
-					"stone": {
-						"label": "Stone",
-						"icon": "res://assets/image/ui/ore.png",
-						"type": "building",
-						"building_key": "stone"
-					}
-				}
-			}
-		}
+		"type": "action",
+		"action": "toggle_ui",
+		"toggle_ui": "bottom_center"
+	},
+	"inventory": {
+		"label": "Inventory",
+		"icon": "res://assets/image/ui/backpack.png",
+		"type": "action",
+		"action": "show_inventory"
 	},
 	"map": {
 		"label": "Map",
@@ -87,10 +18,22 @@
 		"type": "action",
 		"action": "show_map"
 	},
-	"inventory": {
-		"label": "Inventory",
-		"icon": "res://assets/image/ui/backpack.png",
+	"workers": {
+		"label": "Workers",
+		"icon": "res://assets/image/ui/person.png",
 		"type": "action",
-		"action": "show_inventory"
+		"action": "show_workers"
+	},
+	"warehouse": {
+		"label": "Warehouse",
+		"icon": "res://assets/image/ui/crates.png",
+		"type": "action",
+		"action": "show_warehouse"
+	},
+	"logistics": {
+		"label": "Logistics",
+		"icon": "res://assets/image/ui/cart.png",
+		"type": "action",
+		"action": "show_logistics"
 	}
 }

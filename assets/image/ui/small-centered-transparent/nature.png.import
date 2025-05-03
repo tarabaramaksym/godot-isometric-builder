@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ocj3cor4l2pn"
-path="res://.godot/imported/wooden_cart.png-6bbdb91ab1132a89bd3f7e5c6a491385.ctex"
+uid="uid://b3xk01ayw1x5b"
+path="res://.godot/imported/nature.png-40c5a623cb932fa72569a315874177e7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/image/ui/wooden_cart.png"
-dest_files=["res://.godot/imported/wooden_cart.png-6bbdb91ab1132a89bd3f7e5c6a491385.ctex"]
+source_file="res://assets/image/ui/small-centered-transparent/nature.png"
+dest_files=["res://.godot/imported/nature.png-40c5a623cb932fa72569a315874177e7.ctex"]
 
 [params]
 

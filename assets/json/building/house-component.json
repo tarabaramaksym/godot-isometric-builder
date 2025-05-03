@@ -11,6 +11,18 @@
 		"mesh": "res://assets/3d/kenney/wall.glb",
 		"collider": "simple"
 	},
+	"kenney_roof": {
+		"name": "kenney_roof",
+		"base_mesh_size": [
+			1,
+			1,
+			1
+		],
+		"sizing_type": "directional",
+		"mesh_type": "load",
+		"mesh": "res://assets/3d/kenney/roof-high-side.glb",
+		"collider": "simple"
+	},
 	"base_wall": {
 		"name": "base_wall",
 		"mesh_type": "simple",

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://p41ctbk3na6l"
-path="res://.godot/imported/crates.png-a7208739360696e5e7d2453132cc1ad0.ctex"
+uid="uid://duvbh3kiw0h8d"
+path="res://.godot/imported/person.png-09a8296f4d4513c7c8452b1e4bc9e82b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/image/ui/crates.png"
-dest_files=["res://.godot/imported/crates.png-a7208739360696e5e7d2453132cc1ad0.ctex"]
+source_file="res://assets/image/ui/small-centered-transparent/person.png"
+dest_files=["res://.godot/imported/person.png-09a8296f4d4513c7c8452b1e4bc9e82b.ctex"]
 
 [params]
 

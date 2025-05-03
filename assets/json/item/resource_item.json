@@ -1,6 +1,6 @@
 {
 	"large_oak_log": {
-		"type": ["log", "raw_material"],
+		"type": [ "wood", "log", "raw_material" ],
 		"name": "Oak Log",
 		"description": "A block of oak log",
 		"icon": "res://assets/textures/oak_log.png",
@@ -10,7 +10,7 @@
 		"has_quality": false
 	},
 	"stone": {
-		"type": ["stone", "raw_material"],
+		"type": [ "stone", "raw_material" ],
 		"name": "Stone",
 		"description": "A block of stone",
 		"icon": "res://assets/textures/stone.png",
@@ -20,7 +20,7 @@
 		"base_value": 1.0
 	},
 	"iron_ore": {
-		"type": ["ore", "raw_material"],
+		"type": [ "ore", "raw_material" ],
 		"name": "Iron Ore",
 		"description": "A block of iron ore",
 		"icon": "res://assets/textures/iron_ore.png",
@@ -30,7 +30,7 @@
 		"base_value": 1.0
 	},
 	"gold_ore": {
-		"type": ["ore", "raw_material"],
+		"type": [ "ore", "raw_material" ],
 		"name": "Gold Ore",
 		"description": "A block of gold ore",
 		"icon": "res://assets/textures/gold_ore.png",

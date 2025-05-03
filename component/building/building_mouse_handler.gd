@@ -148,7 +148,6 @@ func get_cells_in_drag() -> Array:
     var end_cell = gridmap.local_to_map(drag_current_position)
     
     if adjust_y:
-        print('adjust_y - ', adjust_y)
         start_cell.y = adjust_y_value
         end_cell.y = adjust_y_value
 

@@ -1,6 +1,10 @@
 extends Control
 
 @export var ui_config_path: String
+@export_enum("Horizontal", "Vertical") var type: int
+@export var position_center: bool = false
+@export var preselect_first_tab: bool = false
+@export var icons_size: int = 64
 
 var ui_data: Dictionary
 var navigation_stack: Array = []
@@ -10,35 +14,86 @@ func _ready():
     load_ui_config()
     setup_ui()
 
+func initialize_container():
+    var container
+    if type == 0:
+        container = HBoxContainer.new()
+    else:
+        container = VBoxContainer.new()
+        
+    # Always set alignment to center for consistent layout
+    container.alignment = BoxContainer.ALIGNMENT_CENTER
+    return container
+
 func setup_ui():
     # Clear any existing UI
     for child in get_children():
         child.queue_free()
+
+    # Wrapper for centering if needed
+    var wrapper = null
+    if position_center:
+        wrapper = CenterContainer.new()
+        wrapper.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
+        wrapper.size_flags_horizontal = Control.SIZE_FILL
+        add_child(wrapper)
     
-    # Create main horizontal layout
-    var main_layout = HBoxContainer.new()
-    main_layout.set_anchors_preset(Control.PRESET_FULL_RECT)
-    add_child(main_layout)
+    # Create main vertical layout
+    var main_layout = VBoxContainer.new()
+    main_layout.alignment = BoxContainer.ALIGNMENT_CENTER
+    
+    if position_center:
+        # When using center container, we use simpler setup
+        wrapper.add_child(main_layout)
+    else:
+        main_layout.set_anchors_preset(Control.PRESET_FULL_RECT)
+        add_child(main_layout)
     
     # Create root tab buttons
-    var root_tabs = VBoxContainer.new()
+    var root_tabs = initialize_container()
     main_layout.add_child(root_tabs)
     
     # Create initial container for first level of content
-    var content_container = VBoxContainer.new()
-    content_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+    var content_container = initialize_container()
     main_layout.add_child(content_container)
     tab_containers.append(content_container)
     
     # Add root level tab buttons
+    var first_key = null
     for key in ui_data.keys():
+        if first_key == null:
+            first_key = key
         var tab_data = ui_data[key]
-        var tab_button = create_button(tab_data.icon, 64, 64)
+        var tab_button = create_button(tab_data.icon, icons_size, icons_size)
         tab_button.pressed.connect(func(): navigate_to([key]))
         root_tabs.add_child(tab_button)
     
     # Set initial view to empty
     clear_all_containers()
+    
+    # Auto-select first tab if enabled
+    if preselect_first_tab and first_key != null:
+        navigate_to([first_key])
+    
+    # Schedule a deferred recalculation of layout
+    if position_center:
+        call_deferred("_recalculate_layout", wrapper)
+    else:
+        call_deferred("_recalculate_layout", main_layout)
+
+# Called after all UI elements are added to force layout recalculation
+func _recalculate_layout(main_layout):
+    # Force a layout recalculation
+    main_layout.reset_size()
+    
+    # Also ensure the parent control (the UI container itself) is properly refreshed
+    reset_size()
+    size = size  # Trick to force minimum size recalculation
+    
+    # Ensure proper centering by setting position explicitly if needed
+    if position_center:
+        # Make sure main_layout is centered horizontally
+        main_layout.position.x = (size.x - main_layout.size.x) / 2
 
 func navigate_to(path: Array):
     # If clicking on a root tab, clear everything first
@@ -65,8 +120,7 @@ func update_content():
     if current_data.type == "tab":
         display_tab_content(current_data.items, navigation_stack.size() - 1)
     elif current_data.type == "action":
-        # TODO: Handle action
-        pass
+        handle_action(current_data)
     elif current_data.type == "building":
         switch_to_item(current_data.building_key)
 
@@ -84,7 +138,7 @@ func display_tab_content(items: Dictionary, container_index: int):
     # Add items to the container
     for key in items.keys():
         var item_data = items[key]
-        var button = create_button(item_data.icon, 64, 64)
+        var button = create_button(item_data.icon, icons_size, icons_size)
         
         if item_data.type == "tab":
             # For tabs, add navigation
@@ -95,16 +149,25 @@ func display_tab_content(items: Dictionary, container_index: int):
             # For buildings, switch to item
             button.pressed.connect(func(): switch_to_item(item_data.building_key))
         elif item_data.type == "action":
-            # For actions, do nothing for now
-            pass
-            
+            handle_action(item_data.action)
+
         container.add_child(button)
+
+func handle_action(item_data: Dictionary):
+    match item_data.action:
+        "toggle_ui":
+            GlobalUiManager.toggle_ui_visibility(item_data.toggle_ui)
 
 func ensure_container_count(count: int):
     # Make sure we have enough containers for the current depth
     while tab_containers.size() < count:
-        var container = VBoxContainer.new()
-        container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+        var container = initialize_container()
+        
+        # Center the container's content
+        if type == 0:  # Horizontal container
+            container.alignment = BoxContainer.ALIGNMENT_CENTER
+        else:  # Vertical container
+            container.alignment = BoxContainer.ALIGNMENT_CENTER
         
         # Add the new container next to the last one
         var parent = tab_containers[0].get_parent()
@@ -150,6 +213,9 @@ func create_button(icon_path: String, width: int, height: int) -> Button:
     button.icon = load(icon_path)
     button.mouse_entered.connect(func(): set_ui_interaction(true))
     button.mouse_exited.connect(func(): set_ui_interaction(false))
+    
+    # Set size flags for proper centering in layout
+    button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
     
     # Remove all background styling and borders
     var style = StyleBoxEmpty.new()

@@ -136,7 +136,6 @@ func apply_root_properties():
 
 func save() -> Dictionary:
     var current_size = self.mesh_instance.mesh.size
-    print('saved', game_object_id, current_size)
 
     var save_data = {
         "game_object_id": game_object_id,
