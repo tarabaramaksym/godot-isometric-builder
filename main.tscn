@@ -111,7 +111,7 @@ ui_config_path = "res://assets/json/ui/bottom_center.json"
 position_center = true
 preselect_first_tab = true
 
-[node name="InteractionRecipeUI" type="Control" parent="."]
+[node name="InteractionRecipeUI" type="Control" parent="." node_paths=PackedStringArray("interaction_handler")]
 visible = false
 layout_mode = 3
 anchors_preset = 8
@@ -126,6 +126,7 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("13_82xsv")
+interaction_handler = NodePath("../InteractionHandler")
 
 [node name="PlayerInventoryUI" type="Control" parent="."]
 layout_mode = 3
