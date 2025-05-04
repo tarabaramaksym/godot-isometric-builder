@@ -28,6 +28,7 @@ GlobalSaveManager="*res://global/global_save_manager.gd"
 GlobalTimer="*res://global/global_timer.gd"
 GlobalFileInput="*res://global/global_file_input.gd"
 GlobalUiManager="*res://global/global_ui_manager.gd"
+GlobalWorkersGrid="*res://global/ui/global_workers_grid.gd"
 
 [dotnet]
 
