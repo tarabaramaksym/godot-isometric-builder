@@ -14,7 +14,7 @@ var quantity: int
 func initialize_game_object(game_object_id_param: String, parameters: Dictionary):
 	super.initialize_game_object(game_object_id_param, parameters)
 
-	var data = GlobalFileInput.get_input_data(game_object_id_param)
+	var data = GlobalDataManager.get_input(game_object_id_param)
 
 	if !data:
 		return

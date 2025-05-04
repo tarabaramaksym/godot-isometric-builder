@@ -2,39 +2,28 @@ class_name BuildingBuilder extends Node3D
 
 signal size_options_changed(options)
 
-@export var highlight: Highlight
 @export var navigation_region: NavigationRegion3D
 @export var gridmap: GridMap
 @export var interaction_handler: InteractionHandler
 
-var building_components = {}
-var workstation_components = {}
+var building_components = GlobalDataManager.get_game_object_data()
 var current_size_options = {}
 var current_size_values = {}
 var preview_instance = null
-var current_rotation = 0  # Store rotation in degrees
+var current_rotation = 0
 
-# Position handler for all positioning logic
 var position_handler = BuildingPositionHandler.new()
 
 func _ready():
-	# Add position handler
 	add_child(position_handler)
 
-	building_components = GlobalFileBuilding.load_component_data().duplicate()
-	building_components.merge(GlobalFileWorkstation.load_workstation_data())
-	building_components.merge(GlobalFileNature.load_nature_data())
-
-	# Initialize with default selected component if present
 	if not GlobalBuilding.selected_component.is_empty() and is_valid_component():
 		update_size_options(GlobalBuilding.selected_component)
-
 
 func update_size_options(component_name):
 	current_size_options.clear()
 	current_size_values.clear()
 
-	# Reset rotation when changing components
 	reset_rotation()
 
 	if component_name.is_empty() or not building_components.has(component_name):
@@ -43,10 +32,8 @@ func update_size_options(component_name):
 
 	var component_data = building_components[component_name]
 
-	# Check if component has size options
 	if "size_options" in component_data:
 		for option_set in component_data.size_options:
-			# Process x, y, z options if they exist
 			for axis in ["x", "y", "z"]:
 				if axis in option_set:
 					var axis_data = option_set[axis]

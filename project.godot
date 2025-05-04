@@ -18,17 +18,12 @@ config/icon="res://icon.svg"
 [autoload]
 
 GlobalBuilding="*res://global/global_building.gd"
-GlobalFileBuilding="*res://global/global_file_building.gd"
-GlobalFileResource="*res://global/global_file_resource.gd"
-GlobalFileWorkstation="*res://global/global_file_workstation.gd"
-GlobalFileNature="*res://global/global_file_nature.gd"
 GlobalPlayer="*res://global/global_player.gd"
 GlobalConfig="*res://global/global_config.gd"
 GlobalSaveManager="*res://global/global_save_manager.gd"
 GlobalTimer="*res://global/global_timer.gd"
-GlobalFileInput="*res://global/global_file_input.gd"
+GlobalDataManager="*res://global/global_data_manager.gd"
 GlobalUiManager="*res://global/global_ui_manager.gd"
-GlobalWorkersGrid="*res://global/ui/global_workers_grid.gd"
 
 [dotnet]
 

@@ -22,7 +22,7 @@ func initialize_game_object(game_object_id_param: String, parameters: Dictionary
     var possible_inputs = component_data.input
 
     for input in possible_inputs:
-        var data = GlobalFileInput.get_input_data(input)
+        var data = GlobalDataManager.get_input(input)
         input_data[input] = data
         
         if data.get("type") == "recipe":
@@ -67,7 +67,7 @@ func finish_processing(output: Dictionary):
 
 func inherit_data(input_data_arg: Dictionary) -> Dictionary:
     var inherit = input_data_arg.get("inherit")
-    var parent_data = GlobalFileInput.get_input_data(inherit)
+    var parent_data = GlobalDataManager.get_input(inherit)
     
     var merged_data = parent_data.duplicate(true)
     
