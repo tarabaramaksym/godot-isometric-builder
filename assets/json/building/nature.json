@@ -1,41 +1,53 @@
 {
-  "oak_tree": {
-    "type": "tree",
-    "name": "oak_tree",
-    "mesh_type": "simple",
-    "mesh": "BoxMesh3D",
-    "base_mesh_size": [1, 4, 1],
-    "collider": "simple",
-    "rgb_color": [34, 139, 34],
-	"input_position": [0, 0, 0],
-	"output_position": [0, 0, 0],
-	"input": ["cut_tree"],
-	"distance_margin": 1
-  },
-  "stone": {
-    "name": "stone",
-    "mesh_type": "simple",
-    "mesh": "BoxMesh3D",
-    "base_mesh_size": [1, 1, 1],
-    "collider": "simple",
-    "rgb_color": [128, 128, 128],
-    "resource": "r_stone",
-	"input_position": [0, 0, 0],
-	"output_position": [0, 0, 0],
-	"input": ["mine_stone"],
-	"distance_margin": 1
-  },
-  "iron_ore": {
-    "name": "iron_ore",
-    "mesh_type": "simple",
-    "mesh": "BoxMesh3D",
-    "base_mesh_size": [1, 1, 1],
-    "collider": "simple",
-    "rgb_color": [77, 77, 77],
-    "resource": "r_iron_ore",
-	"input_position": [0, 0, 0],
-	"output_position": [0, 0, 0],
-	"input": ["mine_iron_ore"],
-	"distance_margin": 1
-  }
+	"kenney_oak_tree": {
+		"type": "tree",
+		"name": "kenney_oak_tree",
+		"mesh_type": "load",
+		"mesh": "res://assets/3d/kenney/tree-large.glb",
+		"base_mesh_size": [ 1, 1, 1 ],
+		"collider": "simple",
+		"input_position": [ 0, 0, 0 ],
+		"output_position": [ 0, 0, 0 ],
+		"input": [ "cut_tree" ],
+		"distance_margin": 1
+	},
+	"oak_tree": {
+		"type": "tree",
+		"name": "oak_tree",
+		"mesh_type": "simple",
+		"mesh": "BoxMesh3D",
+		"base_mesh_size": [ 1, 4, 1 ],
+		"collider": "simple",
+		"rgb_color": [ 34, 139, 34 ],
+		"input_position": [ 0, 0, 0 ],
+		"output_position": [ 0, 0, 0 ],
+		"input": [ "cut_tree" ],
+		"distance_margin": 1
+	},
+	"stone": {
+		"name": "stone",
+		"mesh_type": "simple",
+		"mesh": "BoxMesh3D",
+		"base_mesh_size": [ 1, 1, 1 ],
+		"collider": "simple",
+		"rgb_color": [ 128, 128, 128 ],
+		"resource": "r_stone",
+		"input_position": [ 0, 0, 0 ],
+		"output_position": [ 0, 0, 0 ],
+		"input": [ "mine_stone" ],
+		"distance_margin": 1
+	},
+	"iron_ore": {
+		"name": "iron_ore",
+		"mesh_type": "simple",
+		"mesh": "BoxMesh3D",
+		"base_mesh_size": [ 1, 1, 1 ],
+		"collider": "simple",
+		"rgb_color": [ 77, 77, 77 ],
+		"resource": "r_iron_ore",
+		"input_position": [ 0, 0, 0 ],
+		"output_position": [ 0, 0, 0 ],
+		"input": [ "mine_iron_ore" ],
+		"distance_margin": 1
+	}
 }
