@@ -5,6 +5,7 @@
 		"sizing_type": "directional",
 		"mesh_type": "load",
 		"mesh": "res://assets/3d/kenney/wall.glb",
+		"icon": "res://assets/image/ui/wall.png",
 		"collider": "simple"
 	},
 	"kenney_roof": {
@@ -13,6 +14,7 @@
 		"sizing_type": "directional",
 		"mesh_type": "load",
 		"mesh": "res://assets/3d/kenney/roof-high-side.glb",
+		"icon": "res://assets/image/ui/roof.png",
 		"collider": "simple"
 	},
 	"kenney_fence": {
@@ -21,13 +23,16 @@
 		"sizing_type": "directional",
 		"mesh_type": "load",
 		"mesh": "res://assets/3d/kenney/fence.glb",
+		"icon": "res://assets/image/ui/fence.png",
 		"collider": "simple"
 	},
 	"base_wall": {
 		"name": "base_wall",
 		"mesh_type": "simple",
 		"mesh": "BoxMesh3D",
-		"base_mesh_size": [ 1, 4, 1 ],
+		"icon": "res://assets/image/ui/wall.png",
+		"texture": "res://wood.png",
+		"base_mesh_size": [ 0.2, 4, 0.2 ],
 		"sizing_type": "directional",
 		"size_options": [
 			{
@@ -43,6 +48,7 @@
 		"name": "base_foundation",
 		"mesh_type": "simple",
 		"mesh": "BoxMesh3D",
+		"icon": "res://assets/image/ui/foundation.png",
 		"base_mesh_size": [ 1, 0.5, 1 ],
 		"sizing_type": "area",
 		"size_options": [
@@ -59,6 +65,7 @@
 		"name": "base_stairs",
 		"mesh_type": "array",
 		"sizing_type": "directional",
+		"icon": "res://assets/image/ui/stairs.png",
 		"mesh": [
 			{
 				"mesh_type": "simple",

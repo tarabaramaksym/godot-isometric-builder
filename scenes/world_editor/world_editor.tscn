@@ -1,0 +1,119 @@
+[gd_scene load_steps=11 format=3 uid="uid://bjyj4215pta20"]
+
+[ext_resource type="Script" uid="uid://bbtj6bi577x0v" path="res://components/core/main.gd" id="1_berr8"]
+[ext_resource type="Script" uid="uid://b5e7rrn3n66nr" path="res://ui/world_editor/ge_left_ui.gd" id="2_8fgc4"]
+[ext_resource type="Script" uid="uid://djnhxqxtmkvug" path="res://components/building/building_builder.gd" id="2_tnv0e"]
+[ext_resource type="Script" uid="uid://dy3sidmcbxw68" path="res://components/building/building_mouse_handler.gd" id="3_13qlx"]
+[ext_resource type="Script" uid="uid://dl34msu52yo2a" path="res://ui/building/ui_generator.gd" id="7_0ef3u"]
+[ext_resource type="Script" uid="uid://cvrpwbxndlp8i" path="res://components/player/camera_3d.gd" id="12_8f4pj"]
+[ext_resource type="Script" uid="uid://ctaxgt77oos4a" path="res://components/world/world_plane.gd" id="13_1upkj"]
+
+[sub_resource type="Environment" id="Environment_0xm2m"]
+ambient_light_source = 2
+ambient_light_color = Color(0.804743, 0.804743, 0.804743, 1)
+
+[sub_resource type="MeshLibrary" id="MeshLibrary_0xm2m"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ig7tw"]
+albedo_color = Color(0.103513, 0.398537, 9.62615e-08, 1)
+
+[node name="GameEditor" type="Node3D" node_paths=PackedStringArray("camera", "gridmap", "building_builder", "building_mouse_handler")]
+script = ExtResource("1_berr8")
+camera = NodePath("Pivot/Camera3D")
+gridmap = NodePath("LargeGridMap")
+building_builder = NodePath("BuildingBuilder")
+building_mouse_handler = NodePath("BuildingMouseHandler")
+metadata/_edit_vertical_guides_ = [-623.0]
+
+[node name="ScrollContainer" type="ScrollContainer" parent="." node_paths=PackedStringArray("main_container")]
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 227.0
+grow_vertical = 2
+script = ExtResource("2_8fgc4")
+main_container = NodePath("VBoxContainer")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
+layout_mode = 2
+
+[node name="GETopUi" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="BuildingBuilder" type="Node3D" parent="." node_paths=PackedStringArray("large_gridmap", "small_gridmap")]
+script = ExtResource("2_tnv0e")
+large_gridmap = NodePath("../LargeGridMap")
+small_gridmap = NodePath("../SmallGridMap")
+metadata/_custom_type_script = "uid://djnhxqxtmkvug"
+
+[node name="BuildingMouseHandler" type="Node" parent="." node_paths=PackedStringArray("camera", "gridmap", "building_builder")]
+script = ExtResource("3_13qlx")
+camera = NodePath("../Pivot/Camera3D")
+gridmap = NodePath("../LargeGridMap")
+building_builder = NodePath("../BuildingBuilder")
+metadata/_custom_type_script = "uid://dy3sidmcbxw68"
+
+[node name="TopLeftUi" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_left = 8.0
+offset_top = 14.0
+offset_right = 48.0
+offset_bottom = 54.0
+script = ExtResource("7_0ef3u")
+ui_config_path = "res://assets/json/ui/top_left.json"
+type = 1
+icons_size = 58
+
+[node name="BottomCenterUi" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_top = -148.0
+offset_bottom = -148.0
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("7_0ef3u")
+ui_config_path = "res://assets/json/ui/bottom_center.json"
+position_center = true
+preselect_first_tab = true
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 22.6, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_0xm2m")
+
+[node name="Pivot" type="Node3D" parent="."]
+transform = Transform3D(0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 17.537, 36.862, 9.311)
+
+[node name="Camera3D" type="Camera3D" parent="Pivot" node_paths=PackedStringArray("pivot")]
+projection = 1
+size = 20.0
+script = ExtResource("12_8f4pj")
+pivot = NodePath("..")
+max_zoom = 250.0
+zoom_speed = 5.0
+free_roam_speed = 25.0
+
+[node name="LargeGridMap" type="GridMap" parent="."]
+mesh_library = SubResource("MeshLibrary_0xm2m")
+cell_size = Vector3(1, 1, 1)
+
+[node name="SmallGridMap" type="GridMap" parent="."]
+mesh_library = SubResource("MeshLibrary_0xm2m")
+cell_size = Vector3(0.2, 0.2, 0.2)
+
+[node name="Plan" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+use_collision = true
+size = Vector3(100, 1, 100)
+material = SubResource("StandardMaterial3D_ig7tw")
+script = ExtResource("13_1upkj")

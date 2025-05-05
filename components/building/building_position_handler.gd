@@ -1,6 +1,5 @@
 class_name BuildingPositionHandler extends Node3D
 
-
 # Update the position of a preview instance
 func update_preview_position(preview_instance: Node3D, preview_position: Vector3, component_data: Dictionary):
     if not preview_instance:

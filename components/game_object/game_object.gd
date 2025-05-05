@@ -93,6 +93,12 @@ func create_material():
 			1.0
 		)
 
+	if "texture" in component_data:
+		material.albedo_texture = load(component_data.texture)
+		#material.albedo_texture.repeat = Vector2(1, 1)
+		#material.albedo_texture.filter_mode = Texture.FILTER_NEAREST
+		
+
 	if self.mesh_scene:
 		var children = self.mesh_scene.get_children()
 		for child in children:

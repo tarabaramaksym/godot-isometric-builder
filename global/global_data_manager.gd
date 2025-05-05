@@ -37,6 +37,7 @@ func load_data(folder_paths: Array):
                     if json_data:
                         for child_key in json_data.keys():
                             data[child_key] = json_data[child_key]
+                            data[child_key]["object_category"] = file_name.replace(".json", "")
                 
                 file_name = dir.get_next()
             

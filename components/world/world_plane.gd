@@ -1,0 +1,1 @@
+class_name WorldPlane extends CSGBox3D

@@ -1,15 +1,13 @@
 class_name BuildingMouseHandler extends Node
 
 @export var camera: Camera3D
-@export var plane: CSGBox3D
 @export var gridmap: GridMap
 @export var building_builder: Node
 
-# Drag building state
 var is_dragging = false
 var drag_start_position = Vector3.ZERO
 var drag_current_position = Vector3.ZERO
-var drag_previews = []  # Array to store preview instances for dragging
+var drag_previews = []
 
 var adjust_y = false
 var adjust_y_value = 0
@@ -54,10 +52,10 @@ func _process(_delta):
     var result = space_state.intersect_ray(physics)
     
     # Handle dragging and placement
-    if result and (result.collider == plane or result.collider is StaticBody3D):
+    if result and (result.collider is WorldPlane or result.collider is StaticBody3D):
         var is_top_face = result.collider is StaticBody3D and result.normal.dot(Vector3.UP) > 0.99
 
-        var is_plane = result.collider == plane
+        var is_plane = result.collider is WorldPlane
         var world_pos = result.position
         var cell = gridmap.local_to_map(world_pos)
         var cell_world_pos = gridmap.map_to_local(cell)
@@ -288,4 +286,5 @@ func place_dragged_components():
         if not has_mesh_at_position(cell_pos):
             add_mesh(cell_pos, true)
 
-    building_builder.navigation_region.bake_navigation_mesh()            
+    if building_builder.navigation_region:
+        building_builder.navigation_region.bake_navigation_mesh()            
