@@ -1,0 +1,76 @@
+{
+	"smelt_iron_ore": {
+		"label": "Smelt iron ore",
+		"type": "recipe",
+		"inputs": {
+			"recipe": {
+				"input": {
+					"type": "item",
+					"item": {
+						"main_resource_input": {
+							"item_key": "iron_ore",
+							"quantity": 5
+						}
+					}
+				},
+				"output": {
+					"type": "item",
+					"item": {
+						"main_resource_output": {
+							"item_key": "iron_ingot",
+							"quantity": 1
+						}
+					}
+				},
+				"action_time": 1,
+				"process_time": 5
+			}
+		}
+	},
+	"smelt_copper_ore": {
+		"label": "Smelt copper ore",
+		"inherit": "smelt_iron_ore",
+		"inputs": {
+			"recipe": {
+				"input": {
+					"item": {
+						"main_resource_input": {
+							"item_key": "copper_ore"
+						}
+					}
+				},
+				"output": {
+					"item": {
+						"main_resource_output": {
+							"item_key": "copper_ingot"
+						}
+					}
+				},
+				"process_time": 3
+			}
+		}
+	},
+	"smelt_gold_ore": {
+		"label": "Smelt gold ore",
+		"inherit": "smelt_iron_ore",
+		"inputs": {
+			"recipe": {
+				"input": {
+					"item": {
+						"main_resource_input": {
+							"item_key": "gold_ore"
+						}
+					}
+				},
+				"output": {
+					"item": {
+						"main_resource_output": {
+							"item_key": "gold_ingot"
+						}
+					}
+				},
+				"process_time": 4
+			}
+		}
+	}
+}

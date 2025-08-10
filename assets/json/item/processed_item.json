@@ -1,0 +1,22 @@
+{
+	"iron_ingot": {
+		"type": "ingot",
+		"name": "Iron Ingot",
+		"description": "A block of iron ingot",
+		"icon": "res://assets/textures/iron_ingot.png",
+		"weight": 1.0,
+		"base_value": 1.0,
+		"stackable": true,
+		"has_quality": true
+	},
+	"gold_ingot": {
+		"type": ["ingot"],
+		"name": "Gold Ingot",
+		"description": "A block of gold ingot",
+		"icon": "res://assets/textures/gold_ingot.png",
+		"weight": 1.0,
+		"base_value": 1.0,
+		"stackable": true,
+		"has_quality": true
+	}
+}

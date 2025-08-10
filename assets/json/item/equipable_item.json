@@ -1,0 +1,40 @@
+{
+	"pickaxe": {
+		"name": "pickaxe",
+		"stackable": false,
+		"has_quality": false,
+		"two_handed": true,
+		"description": "A block of iron ingot",
+		"icon": "res://assets/textures/iron_ingot.png",
+		"weight": 1.0,
+		"base_value": 1.0,
+		"damage": 10,
+		"attack_speed": 1.0,
+		"attack_range": 2.0,
+		"attack_cooldown": 1.0,
+		"attack_animation": "pickaxe_attack",
+		"mesh_type": "load",
+		"mesh": "res://assets/3d/item/pickaxe.glb",
+		"scale": [ 0.4, 0.4, 0.4 ],
+		"rotation": [ 0, 90, 0 ]
+	},
+	"axe": {
+		"name": "axe",
+		"stackable": false,
+		"has_quality": false,
+		"two_handed": true,
+		"description": "A block of iron ingot",
+		"icon": "res://assets/textures/iron_ingot.png",
+		"weight": 1.0,
+		"base_value": 1.0,
+		"damage": 10,
+		"attack_speed": 1.0,
+		"attack_range": 2.0,
+		"attack_cooldown": 1.0,
+		"attack_animation": "axe_attack",
+		"mesh_type": "load",
+		"mesh": "res://assets/3d/item/pickaxe.glb",
+		"scale": [ 0.4, 0.4, 0.4 ],
+		"rotation": [ 0, 90, 0 ]
+	}
+}

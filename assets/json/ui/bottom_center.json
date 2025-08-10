@@ -1,0 +1,95 @@
+{
+	"building": {
+		"label": "Buildings",
+		"icon": "res://assets/image/ui/building.png",
+		"type": "tab",
+		"items": {
+			"kenney_wall": {
+				"label": "Kenney Wall",
+				"icon": "res://assets/image/ui/wall.png",
+				"type": "building",
+				"building_key": "kenney_wall"
+			},
+			"wall": {
+				"label": "Wall",
+				"icon": "res://assets/image/ui/wall.png",
+				"type": "building",
+				"building_key": "base_wall"
+			},
+			"kenney_roof": {
+				"label": "Roof",
+				"icon": "res://assets/image/ui/axe.png",
+				"type": "building",
+				"building_key": "kenney_roof"
+			},
+			"kenney_fence": {
+				"label": "Fence",
+				"icon": "res://assets/image/ui/hammer.png",
+				"type": "building",
+				"building_key": "kenney_fence"
+			},
+			"foundation": {
+				"label": "Foundation",
+				"icon": "res://assets/image/ui/foundation.png",
+				"type": "building",
+				"building_key": "base_foundation"
+			},
+			"stair": {
+				"label": "Stairs",
+				"icon": "res://assets/image/ui/stairs.png",
+				"type": "building",
+				"building_key": "base_stairs"
+			}
+		}
+	},
+	"workstation": {
+		"label": "Workstations",
+		"icon": "res://assets/image/ui/workstation.png",
+		"type": "tab",
+		"items": {
+			"primitive_smelting_furnace": {
+				"label": "Primitive Smelting Furnace",
+				"icon": "res://assets/image/ui/furnace.png",
+				"type": "building",
+				"building_key": "primitive_smelting_furnace"
+			},
+			"simple_smelting_furnace": {
+				"label": "Simple Smelting Furnace",
+				"icon": "res://assets/image/ui/furnace.png",
+				"type": "building",
+				"building_key": "simple_smelting_furnace"
+			}
+		}
+	},
+	"nature": {
+		"label": "Nature",
+		"icon": "res://assets/image/ui/nature.png",
+		"type": "tab",
+		"items": {
+			"tree": {
+				"label": "Tree",
+				"icon": "res://assets/image/ui/tree.png",
+				"type": "building",
+				"building_key": "oak_tree"
+			},
+			"kenney_oak_tree": {
+				"label": "Kenney Oak Tree",
+				"icon": "res://assets/image/ui/tree.png",
+				"type": "building",
+				"building_key": "kenney_oak_tree"
+			},
+			"iron_ore": {
+				"label": "Iron Ore",
+				"icon": "res://assets/image/ui/ore.png",
+				"type": "building",
+				"building_key": "iron_ore"
+			},
+			"stone": {
+				"label": "Stone",
+				"icon": "res://assets/image/ui/ore.png",
+				"type": "building",
+				"building_key": "stone"
+			}
+		}
+	}
+}

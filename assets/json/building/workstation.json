@@ -1,0 +1,33 @@
+{
+	"primitive_smelting_furnace": {
+		"type": "workstation",
+		"name": "primitive_smelting_furnace",
+		"mesh_type": "simple",
+		"mesh": "BoxMesh3D",
+		"base_mesh_size": [ 1, 2, 1 ],
+		"collider": "simple",
+		"rgb_color": [ 124, 124, 124 ],
+		"input_position": [ 0, 0, 0.5 ],
+		"output_position": [ 0, 0, 0.5 ],
+		"input": [ "smelt_copper_ore" ],
+		"fuel": [
+			{
+				"type": "wood"
+			}
+		]
+	},
+	"simple_smelting_furnace": {
+		"name": "simple_smelting_furnace",
+		"inherit": "primitive_smelting_furnace",
+		"rgb_color": [ 111, 111, 111 ],
+		"input": [ "smelt_copper_ore", "smelt_iron_ore", "smelt_gold_ore" ],
+		"fuel": [
+			{
+				"type": "wood"
+			},
+			{
+				"item": "coal"
+			}
+		]
+	}
+}

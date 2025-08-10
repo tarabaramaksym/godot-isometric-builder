@@ -1,0 +1,39 @@
+{
+	"building": {
+		"label": "Buildings",
+		"icon": "res://assets/image/ui/hammer.png",
+		"type": "action",
+		"action": "toggle_ui",
+		"toggle_ui": "bottom_center"
+	},
+	"inventory": {
+		"label": "Inventory",
+		"icon": "res://assets/image/ui/backpack.png",
+		"type": "action",
+		"action": "show_inventory"
+	},
+	"map": {
+		"label": "Map",
+		"icon": "res://assets/image/ui/map.png",
+		"type": "action",
+		"action": "show_map"
+	},
+	"workers": {
+		"label": "Workers",
+		"icon": "res://assets/image/ui/person.png",
+		"type": "action",
+		"action": "show_workers"
+	},
+	"warehouse": {
+		"label": "Warehouse",
+		"icon": "res://assets/image/ui/crates.png",
+		"type": "action",
+		"action": "show_warehouse"
+	},
+	"logistics": {
+		"label": "Logistics",
+		"icon": "res://assets/image/ui/cart.png",
+		"type": "action",
+		"action": "show_logistics"
+	}
+}
